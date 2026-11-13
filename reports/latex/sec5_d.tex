@@ -1,7 +1,7 @@
-\section{Câu d: Data Preparation}
+\section{Chuẩn bị dữ liệu (Data Preparation)}
 \label{sec:d}
 
-Đầu vào là dữ liệu đã xử lý và đóng băng ở câu c (script kiểm tra mã băm trước khi chạy). Mục tiêu là một ma trận số cho thuật toán dựa trên khoảng cách, trong đó mỗi thuộc tính đóng góp một cách có chủ đích.
+Đầu vào là dữ liệu đã xử lý và đóng băng ở bước tiền xử lý (mục~\ref{sec:c}; script kiểm tra mã băm trước khi chạy). Mục tiêu là một ma trận số cho thuật toán dựa trên khoảng cách, trong đó mỗi thuộc tính đóng góp một cách có chủ đích.
 
 \subsection{Chuẩn hóa: so sánh StandardScaler, MinMaxScaler và RobustScaler}
 Ba bộ chuẩn hóa khác nhau ở thứ được dùng để đặt thang: trung bình và độ lệch chuẩn (Standard), min và max (MinMax), trung vị và IQR (Robust). Với phân cụm dựa trên khoảng cách, điều quan trọng là mỗi cột đóng góp ngang nhau và vài dòng không chi phối.
@@ -67,7 +67,7 @@ Phiên bản giữ lại \var{total_spend_12m} được lưu riêng (\var{X_full
 Với $N=260$ và 19 cột không cần giảm chiều để tính toán, và không giảm chiều chỉ để biểu đồ đẹp hơn; PCA 90\% chỉ là biến thể để so sánh (Hình~\ref{fig:d_red}).
 
 \paragraph{K-Means, K-Prototypes hay Gower.} Dữ liệu hỗn hợp nhưng thiên về số: 9 cột số, 1 hạng, 1 nhị phân, 2 định danh (13 thuộc tính sau chọn lọc), và quan hệ của biến phân loại với biến số yếu
-(câu b: Cramér $V\le 0{,}24$; $\varepsilon^2$ của thiết bị $\le 0{,}11$). K-Means trên ma trận trên là phương án chính: với $w$, mỗi biến đóng góp ngang nhau, tức đã làm điều mà tham số $\gamma$ của K-Prototypes phải điều chỉnh,
+(mục~\ref{sec:b}: Cramér $V\le 0{,}24$; $\varepsilon^2$ của thiết bị $\le 0{,}11$). K-Means trên ma trận trên là phương án chính: với $w$, mỗi biến đóng góp ngang nhau, tức đã làm điều mà tham số $\gamma$ của K-Prototypes phải điều chỉnh,
 và $\gamma$ không có giá trị ``đúng'' trong học không giám sát. K-Prototypes không chạy được (môi trường không có thư viện \texttt{kmodes}). Thay vào đó lưu ma trận khoảng cách Gower ($260\times260$, bỏ biến khi \texttt{unknown})
 cho phân cụm phân cấp; hình học của nó khác $X_{\text{main}}$ rõ (5-NN trùng $0{,}71$, tương quan hạng khoảng cách $0{,}894$).
 

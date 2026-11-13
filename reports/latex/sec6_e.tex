@@ -1,13 +1,13 @@
-\section{Câu e: Phân cụm và đánh giá kết quả}
+\section{Phân cụm và đánh giá kết quả}
 \label{sec:e}
 
 \subsection{Thiết lập thực nghiệm}
-\paragraph{Thuật toán.} \textbf{K-Means} (\var{n_init}=50, \var{random_state}=42) là thuật toán chính: khoảng cách Euclid trên ma trận đã chuẩn hóa đúng là điều câu d chuẩn bị, tái lập được và tâm cụm đọc được.
+\paragraph{Thuật toán.} \textbf{K-Means} (\var{n_init}=50, \var{random_state}=42) là thuật toán chính: khoảng cách Euclid trên ma trận đã chuẩn hóa đúng là điều bước chuẩn bị đã thực hiện, tái lập được và tâm cụm đọc được.
 Thuật toán thứ hai là \textbf{phân cụm phân cấp trên khoảng cách Gower} (không cần ma trận số, dùng thang riêng) để xem kết luận có chỉ đúng với K-Means hay không. Chưa dùng DBSCAN/GMM; K-Prototypes không chạy được (thiếu thư viện \texttt{kmodes}).
 
 \paragraph{Các nhánh so sánh.} Cả năm nhánh dùng \textbf{cùng 260 khách}; số cột khác nhau và là một phần của khác biệt cần đọc (Bảng~\ref{tab:branches}). B1 là nền công bằng: biến đổi \emph{tối thiểu} để K-Means chạy
-(điền trung vị, one-hot, mã hạng, z-score mọi cột); B0 bỏ cả z-score để thấy riêng tác động của thang đo; L2 là dữ liệu sau câu c với đúng biến đổi của B1 (tách đóng góp của câu c khỏi câu d); L3 là $X_{\text{main}}$ của câu d.
-REF là dữ liệu sạch D0 qua đúng pipeline câu d: \textbf{mốc trần}, không phải một phương pháp.
+(điền trung vị, one-hot, mã hạng, z-score mọi cột); B0 bỏ cả z-score để thấy riêng tác động của thang đo; L2 là dữ liệu sau tiền xử lý với đúng biến đổi của B1 (tách đóng góp của tiền xử lý khỏi chuẩn bị); L3 là $X_{\text{main}}$ của bước chuẩn bị.
+REF là dữ liệu sạch D0 qua đúng pipeline của bước chuẩn bị: \textbf{mốc trần}, không phải một phương pháp.
 
 \begin{table}[htbp]
 \centering\small
@@ -19,9 +19,9 @@ Nhánh & Vai trò & Số cột & Dữ liệu và biến đổi\\
 \midrule
 B0 & Phụ & 20 & D3, điền trung vị, one-hot, mã hạng, \emph{không} chuẩn hóa\\
 \textbf{B1} & \textbf{Trước xử lý} & 20 & B0 + z-score mọi cột\\
-L2 & Phụ (riêng câu c) & 21 & Dữ liệu sau câu c, cùng biến đổi như B1 (\texttt{unknown} là một mức)\\
+L2 & Phụ (riêng tiền xử lý) & 21 & Dữ liệu sau tiền xử lý, cùng biến đổi như B1 (\texttt{unknown} là một mức)\\
 \textbf{L3} & \textbf{Sau xử lý, chuẩn bị} & 19 & $X_{\text{main}}$ (log1p, z-score, one-hot $\times\,w$, bỏ total\_spend)\\
-REF & Mốc trần & 19 & D0 sạch qua đúng pipeline câu d\\
+REF & Mốc trần & 19 & D0 sạch qua đúng pipeline của bước chuẩn bị\\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -68,7 +68,7 @@ REF & 0,777 \CI{0,693}{0,856} & 0,737 & 0,912 & 0,295 & 75/74/66/45 & 0,987$\pm$
 \label{fig:e_ext}
 \end{figure}
 
-\paragraph{Chênh lệch có ý nghĩa không?} Bảng~\ref{tab:e_diff} dùng bootstrap ghép cặp. Tổng hiệu quả câu c + d là rõ ràng ở cả hai thiết lập; riêng câu c có ý nghĩa; riêng câu d \emph{không} phân biệt được với 0 ở $k=4$,
+\paragraph{Chênh lệch có ý nghĩa không?} Bảng~\ref{tab:e_diff} dùng bootstrap ghép cặp. Tổng hiệu quả tiền xử lý + chuẩn bị là rõ ràng ở cả hai thiết lập; riêng tiền xử lý có ý nghĩa; riêng chuẩn bị \emph{không} phân biệt được với 0 ở $k=4$,
 và khoảng cách tới dữ liệu sạch cũng không phân biệt được với 0 ở $n=260$.
 
 \begin{table}[htbp]
@@ -79,15 +79,15 @@ và khoảng cách tới dữ liệu sạch cũng không phân biệt được v
 \toprule
 So sánh & $k=4$ & $k$ chọn theo Silhouette\\
 \midrule
-L3 $-$ B1 (câu c + d) & $+0{,}134$ \CI{0,058}{0,206} & $+0{,}311$ \CI{0,224}{0,393}\\
-L2 $-$ B1 (riêng câu c) & $+0{,}090$ \CI{0,040}{0,143} & $+0{,}117$ \CI{0,057}{0,177}\\
-L3 $-$ L2 (riêng câu d) & $+0{,}044$ \CI{-0,024}{0,115} & $+0{,}194$ \CI{0,101}{0,281}\\
+L3 $-$ B1 (tiền xử lý + chuẩn bị) & $+0{,}134$ \CI{0,058}{0,206} & $+0{,}311$ \CI{0,224}{0,393}\\
+L2 $-$ B1 (riêng tiền xử lý) & $+0{,}090$ \CI{0,040}{0,143} & $+0{,}117$ \CI{0,057}{0,177}\\
+L3 $-$ L2 (riêng chuẩn bị) & $+0{,}044$ \CI{-0,024}{0,115} & $+0{,}194$ \CI{0,101}{0,281}\\
 REF $-$ L3 (khoảng cách tới trần) & $+0{,}032$ \CI{-0,007}{0,071} & $+0{,}032$ \CI{-0,007}{0,071}\\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Lợi ích của câu d nằm ở \emph{độ vững} chứ không phải ARI tại $k=4$: L3 chọn đúng $k=4$ trong khi L2 chọn $k=7$ (chênh ARI $+0{,}194$ khi $k$ chọn theo nội tại), và K-Means ít mắc tối ưu cục bộ hơn
+Lợi ích của bước chuẩn bị nằm ở \emph{độ vững} chứ không phải ARI tại $k=4$: L3 chọn đúng $k=4$ trong khi L2 chọn $k=7$ (chênh ARI $+0{,}194$ khi $k$ chọn theo nội tại), và K-Means ít mắc tối ưu cục bộ hơn
 (ARI giữa các lần chạy \var{n_init}=1: $0{,}823\to0{,}958$; thấp nhất $0{,}485\to0{,}721$).
 
 \paragraph{Khách ``cầu nối'' quyết định trần.} Trên 213 khách thường, ARI là $0{,}812$ (B1), $0{,}869$ (L2), $\mathbf{0{,}966}$ (L3) và $1{,}000$ (REF); trên 47 khách cầu nối mọi nhánh chỉ đạt $0{,}06$--$0{,}19$ (kể cả REF $0{,}19$).
@@ -139,12 +139,12 @@ Nhánh & \texttt{average} (cụm nhỏ nhất) & \texttt{complete} & Được ch
 \midrule
 B1 (Gower trên D3 thô) & 0,047 (1 dòng) & 0,126 & average: 0,047\\
 L2 (đơn vị gốc, đã xử lý) & 0,170 (1 dòng) & 0,262 & average: 0,170\\
-L3 (Gower của câu d) & 0,487 (2 dòng) & 0,605 & complete: 0,605\\
+L3 (Gower của bước chuẩn bị) & 0,487 (2 dòng) & 0,605 & complete: 0,605\\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\subsection{Độ nhạy đối với các lựa chọn ở câu c, d}
+\subsection{Độ nhạy đối với các lựa chọn ở bước tiền xử lý và chuẩn bị}
 Bảng~\ref{tab:sens} cho thấy các lựa chọn bị nghi ngờ đều không làm kết quả thay đổi đáng kể ở $k=4$: cách xử lý \texttt{unknown} (thành cột, KNN-7, mode) gần như không ảnh hưởng; bỏ hẳn category đổi khoảng 5\% nhãn và không làm tệ đi;
 bỏ \var{total_spend_12m} hay dùng PCA 90\% cũng không đổi đáng kể; loại 34 dòng cực trị hợp lệ không cải thiện, tức giữ chúng không gây hại. Vì vậy quyết định giữ \texttt{unknown} và giữ category không bị bác bỏ, nhưng category cũng không chứng minh được giá trị trên mẫu này.
 

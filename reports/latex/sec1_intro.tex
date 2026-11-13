@@ -1,37 +1,42 @@
-\section{Giới thiệu và ràng buộc của đề}
+\section{Bài toán và phạm vi}
 \label{sec:intro}
 
-Một sàn thương mại điện tử muốn phân nhóm khách hàng theo đặc điểm và hành vi mua sắm để hỗ trợ chăm sóc khách hàng và tiếp thị.
-Đây là bài toán \emph{phân cụm} (học không giám sát): không có nhãn mục tiêu như trong phân loại. Vì dữ liệu được giả lập, ta biết trước một cấu trúc nhóm ẩn;
-cấu trúc này \textbf{chỉ được dùng để đánh giá ở cuối} (câu c, sau khi đóng băng kết quả, và câu e), tuyệt đối không dùng để chọn thuộc tính, tham số hay số cụm.
+\subsection{Bài toán cần giải quyết}
+Một sàn thương mại điện tử có tập khách hàng với các đặc điểm (tuổi, thiết bị, hạng thành viên, ngành hàng ưa thích) và hành vi (lịch sử mua hàng, chi tiêu, mức dùng khuyến mãi, hành vi duyệt, mức tương tác với nền tảng).
+Doanh nghiệp muốn chia khách thành một vài nhóm sao cho khách trong cùng nhóm có hành vi giống nhau và khác với các nhóm còn lại, để chăm sóc, giữ chân và tiếp thị phù hợp với từng nhóm (ví dụ khách giá trị cao, khách chủ yếu săn khuyến mãi,
+khách mua không thường xuyên, khách chủ yếu duyệt mà không mua). Không có nhãn nhóm sẵn có, nên đây là bài toán \emph{phân cụm} (học không giám sát).
 
-\subsection{Tham số theo mã sinh viên}
-Với $s = 24022433$: $a = s \bmod 5 = 3$, $b = \lfloor s/10\rfloor \bmod 5 = 3$, $c = \lfloor s/100\rfloor \bmod 5 = 4$.
+Khó khăn nằm ở chất lượng dữ liệu: nhiễu đo lường, ngoại lai (cần phân biệt lỗi nhập liệu với khách cực trị có thật), giá trị thiếu, phân phối lệch phải, thuộc tính trùng lặp và dữ liệu hỗn hợp số/thứ tự/định danh với thang đo rất khác nhau.
+Các vấn đề này làm méo khoảng cách giữa các khách hàng, mà thuật toán phân cụm dựa vào chính khoảng cách đó. Câu hỏi cụ thể của báo cáo là: \emph{hiểu, tiền xử lý và chuẩn bị dữ liệu thay đổi chất lượng và độ ổn định của phân cụm đến mức nào so với việc chỉ biến đổi tối thiểu để thuật toán chạy được?}
+
+\subsection{Dữ liệu và cách đánh giá}
+Vì không có dữ liệu khách hàng thật, báo cáo dùng bộ dữ liệu giả lập có cấu trúc nhóm ẩn (bốn kiểu khách, có chồng lấn) để biết trước ``đáp án'' và đo được mức khôi phục cấu trúc. Nhãn nhóm ẩn \textbf{chỉ được dùng để đánh giá} (sau khi kết quả tiền xử lý đã đóng băng và ở bước phân cụm),
+tuyệt đối không dùng để chọn thuộc tính, tham số hay số cụm.
 
 \begin{table}[htbp]
 \centering\small
-\caption{Ràng buộc của đề và mức thực hiện.}
+\caption{Quy mô và đặc điểm của bộ dữ liệu.}
 \label{tab:constraints}
-\begin{tabularx}{\linewidth}{Xlll}
+\begin{tabularx}{\linewidth}{lX}
 \toprule
-Yêu cầu & Công thức & Tối thiểu & Thực hiện\\
+Đặc điểm & Giá trị\\
 \midrule
-Số bản ghi & $N = 200 + 20a$ & 260 & \textbf{260}\\
-Số thuộc tính đầu vào & $\ge 8 + b$ & 11 & \textbf{14}\\
-Số bản ghi ngoại lai & $\ge 5 + 2c$ & 13 & \textbf{15}\\
-Thuộc tính có giá trị thiếu & $\ge 2$ & 2 & \textbf{3}\\
-Thuộc tính số có nhiễu ngẫu nhiên & $\ge 2$ & 2 & \textbf{4}\\
+Số khách hàng & 260\\
+Số thuộc tính đầu vào & 14 (10 số, 1 thứ tự, 2 định danh, 1 nhị phân), không tính khóa \var{customer_id}\\
+Nhóm ẩn (chỉ dùng để đánh giá) & 4 nhóm, kích thước 48 / 78 / 66 / 68; khoảng 18\% khách ``cầu nối''\\
+Nhiễu ngẫu nhiên & 4 cột số, áp dụng cho mọi khách\\
+Ngoại lai & 15 khách: 8 cực trị hợp lệ và 7 lỗi dữ liệu (mỗi khách hỏng một ô)\\
+Giá trị thiếu & 3 cột (\var{age}, \var{avg_session_minutes}, \var{preferred_category}); 61 khách (23,5\%) có ít nhất một ô thiếu\\
 \bottomrule
 \end{tabularx}
 \end{table}
 
 \subsection{Quy trình và nguyên tắc làm việc}
-Quy trình gồm năm giai đoạn (Hình~\ref{fig:pipeline}). Dữ liệu được sinh theo chuỗi tích lũy D0 $\to$ D3, mỗi bước thêm đúng một loại vấn đề, để có thể đo riêng tác động của từng loại.
-Các nguyên tắc xuyên suốt:
+Quy trình gồm năm bước (Hình~\ref{fig:pipeline}). Dữ liệu được sinh theo chuỗi tích lũy D0 $\to$ D3, mỗi bước thêm đúng một loại vấn đề, để đo riêng tác động của từng loại. Các nguyên tắc xuyên suốt:
 \begin{itemize}
-\item \textbf{Không rò rỉ nhãn.} Nhãn phân khúc và nhật ký chèn lỗi nằm trong thư mục riêng, không có mặt trong bất kỳ file dữ liệu nào đưa vào phân tích. Câu b chia hai phần: Phần A đọc duy nhất file D3 (``mù''), Phần B mới đối chiếu với D0--D2.
-\item \textbf{Đóng băng và kiểm chứng.} Kết quả câu c được ghi mã băm SHA-256 và khóa ghi; script đối chiếu với dữ liệu sạch và các câu sau từ chối chạy nếu mã băm lệch.
-\item \textbf{Trung thực về kết quả.} Mọi kết quả không thuận lợi, mọi lần sửa phương pháp sau khi thấy kết quả và mọi sai sót đã phát hiện được ghi lại (Phụ lục~\ref{app:ai}).
+\item \textbf{Không rò rỉ nhãn.} Nhãn nhóm và nhật ký chèn lỗi nằm trong thư mục riêng, không có mặt trong bất kỳ file dữ liệu nào đưa vào phân tích. Bước hiểu dữ liệu chia hai phần: Phần A chỉ đọc file D3 (``mù''), Phần B mới đối chiếu với D0--D2.
+\item \textbf{Đóng băng và kiểm chứng.} Kết quả tiền xử lý được ghi mã băm SHA-256 và khóa ghi; script đối chiếu với dữ liệu sạch và các bước sau từ chối chạy nếu mã băm lệch.
+\item \textbf{Trung thực về kết quả.} Mọi kết quả không thuận lợi và mọi lần sửa phương pháp sau khi thấy kết quả được ghi lại (Phụ lục~\ref{app:ai}).
 \end{itemize}
 
 \begin{figure}[htbp]
@@ -39,22 +44,22 @@ Các nguyên tắc xuyên suốt:
 \begin{tikzpicture}[
   box/.style={draw=#1!70!black, rounded corners=2pt, align=center, font=\footnotesize, text width=2.55cm, minimum height=1.05cm, fill=#1!12},
   arr/.style={-{Stealth[length=2mm]}, thick}, node distance=6mm]
-\node[box=cBlue] (a0) {\textbf{Câu a}\\ D0: dữ liệu sạch};
+\node[box=cBlue] (a0) {\textbf{Sinh dữ liệu}\\ D0: dữ liệu sạch};
 \node[box=cBlue, right=of a0] (a1) {D1 = D0\\ + nhiễu (4 cột)};
 \node[box=cBlue, right=of a1] (a2) {D2 = D1\\ + 15 ngoại lai};
 \node[box=cBlue, right=of a2] (a3) {D3 = D2\\ + thiếu (3 cột)};
-\node[box=cViolet, below=12mm of a0] (b) {\textbf{Câu b}\\ hiểu dữ liệu\\ (chỉ đọc D3)};
-\node[box=cViolet, right=of b] (c) {\textbf{Câu c}\\ tiền xử lý\\ + đóng băng SHA-256};
-\node[box=cTeal, right=of c] (d) {\textbf{Câu d}\\ chuẩn bị\\ $X_{\text{main}}$: $260\times19$};
-\node[box=cTeal, right=of d] (e) {\textbf{Câu e}\\ phân cụm\\ và đánh giá};
-\node[box=cGray, dashed, text width=6.4cm, below=10mm of $(c)!0.5!(d)$] (h) {Thông tin ẩn: nhãn phân khúc, nhật ký chèn lỗi, D0\\ (chỉ dùng để đánh giá ở câu c sau đóng băng và ở câu e)};
+\node[box=cViolet, below=12mm of a0] (b) {\textbf{Hiểu dữ liệu}\\ (chỉ đọc D3)};
+\node[box=cViolet, right=of b] (c) {\textbf{Tiền xử lý}\\ + đóng băng SHA-256};
+\node[box=cTeal, right=of c] (d) {\textbf{Chuẩn bị dữ liệu}\\ $X_{\text{main}}$: $260\times19$};
+\node[box=cTeal, right=of d] (e) {\textbf{Phân cụm}\\ và đánh giá};
+\node[box=cGray, dashed, text width=6.4cm, below=10mm of $(c)!0.5!(d)$] (h) {Thông tin ẩn: nhãn nhóm, nhật ký chèn lỗi, D0\\ (chỉ dùng để đánh giá sau đóng băng và ở bước phân cụm)};
 \draw[arr] (a0) -- (a1); \draw[arr] (a1) -- (a2); \draw[arr] (a2) -- (a3);
 \draw[arr] (a3.south) -- ++(0,-0.55) -| (b.north);
 \draw[arr] (b) -- (c); \draw[arr] (c) -- (d); \draw[arr] (d) -- (e);
 \draw[arr, dashed, cGray] (h.north) ++(-1.3,0) -- (c.south);
 \draw[arr, dashed, cGray] (h.north) ++(1.3,0) -- ($(e.south)+(-0.4,0)$);
 \end{tikzpicture}
-\caption{Sơ đồ quy trình. Dữ liệu qua bốn phiên bản D0--D3; câu b--e chỉ làm việc với D3 và các kết quả đã đóng băng.}
+\caption{Sơ đồ quy trình. Dữ liệu qua bốn phiên bản D0--D3; các bước từ hiểu dữ liệu đến phân cụm chỉ làm việc với D3 và các kết quả đã đóng băng.}
 \label{fig:pipeline}
 \end{figure}
 \FloatBarrier

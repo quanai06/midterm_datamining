@@ -1,9 +1,9 @@
-\section{Sản phẩm nộp và cách tái lập}
+\section{Sản phẩm và cách tái lập}
 \label{app:repro}
 
 \begin{table}[htbp]
 \centering\footnotesize
-\caption{Đối chiếu với danh mục sản phẩm của đề.}
+\caption{Sản phẩm của dự án và vị trí trong kho mã.}
 \label{tab:deliver}
 \begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}p{4.2cm}X}
 \toprule
@@ -12,21 +12,21 @@ Sản phẩm & Vị trí trong kho mã\\
 Báo cáo & \texttt{reports/latex/main.pdf} (nguồn \texttt{main.tex} và các \texttt{sec*.tex})\\
 Dữ liệu ban đầu và sau nhiễu, ngoại lai & \var{data/01_generated/}: \var{data_clean_reference.csv} (D0), \var{data_after_noise.csv} (D1), \var{data_after_outliers.csv} (D2), \var{data_raw_corrupted.csv} (D3), \var{data_dictionary.csv}; nhật ký chèn lỗi và nhãn ẩn ở \texttt{data/hidden/}\\
 Dữ liệu sau tiền xử lý và chuẩn bị & \var{data/02_preprocessed/} (dữ liệu, nhật ký ô thay đổi, cờ, biến thể, \var{FROZEN_SHA256.json}); \var{data/03_prepared/} (\var{X_main.csv}, \texttt{pipeline/}, \texttt{variants/}); \var{data/04_clustering/} (nhãn cụm, tâm cụm, cấu hình)\\
-Mã nguồn và bằng chứng thực nghiệm & \var{src/01_generate_data.py}, \var{02_data_understanding.py}, \var{03_preprocess.py}, \var{03b_evaluate_preprocessing.py}, \var{04_prepare.py}, \var{05_cluster.py}, \var{dm_utils.py}, \var{viz_style.py}; \texttt{notebooks/} (Colab cho câu a); log ở \texttt{logs/}; bảng ở \texttt{reports/tables/}; hình ở \texttt{figures/}\\
-Lịch sử hội thoại và khai báo công cụ & Phụ lục~\ref{app:ai}; \var{docs/ai_log.md}; file hội thoại đầy đủ nộp kèm\\
+Mã nguồn và bằng chứng thực nghiệm & \var{src/01_generate_data.py}, \var{02_data_understanding.py}, \var{03_preprocess.py}, \var{03b_evaluate_preprocessing.py}, \var{04_prepare.py}, \var{05_cluster.py}, \var{dm_utils.py}, \var{viz_style.py}; \texttt{notebooks/} (Colab cho bước sinh dữ liệu); log ở \texttt{logs/}; bảng ở \texttt{reports/tables/}; hình ở \texttt{figures/}\\
+Lịch sử hội thoại và khai báo công cụ & Phụ lục~\ref{app:ai}; \var{docs/ai_log.md}\\
 \bottomrule
 \end{tabularx}
 \end{table}
 
-\paragraph{Chạy lại toàn bộ (CPU, vài phút).} Hạt giống cố định (42); các script ghi log vào \var{logs/}; mọi bước sau câu c từ chối chạy nếu dữ liệu đầu vào không khớp mã băm đã đóng băng.
+\paragraph{Chạy lại toàn bộ (CPU, vài phút).} Hạt giống cố định (42); các script ghi log vào \var{logs/}; mọi bước sau tiền xử lý từ chối chạy nếu dữ liệu đầu vào không khớp mã băm đã đóng băng.
 {\footnotesize
 \begin{verbatim}
 pip install -r requirements.txt
-python src/01_generate_data.py          # câu a (42 kiểm tra nghiệm thu)
-python src/02_data_understanding.py     # câu b
-python src/03_preprocess.py             # câu c (15 kiểm tra, đóng băng SHA-256)
+python src/01_generate_data.py          # sinh dữ liệu (42 kiểm tra nghiệm thu)
+python src/02_data_understanding.py     # hiểu dữ liệu
+python src/03_preprocess.py             # tiền xử lý (15 kiểm tra, đóng băng SHA-256)
 python src/03b_evaluate_preprocessing.py  # chỉ chạy khi mã băm khớp
-python src/04_prepare.py                # câu d (13 kiểm tra)
-python src/05_cluster.py                # câu e
+python src/04_prepare.py                # chuẩn bị dữ liệu (13 kiểm tra)
+python src/05_cluster.py                # phân cụm
 cd reports/latex && tectonic main.tex   # biên dịch báo cáo
 \end{verbatim}}

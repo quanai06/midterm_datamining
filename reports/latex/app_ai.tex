@@ -6,37 +6,37 @@
 \item \textbf{Claude Code} (mô hình Claude Sonnet 5.5): đề xuất thiết kế, viết mã, chạy kiểm tra, phân tích kết quả và soạn tài liệu, theo từng giai đoạn: mỗi giai đoạn hoàn thành và kiểm tra thực tế trước khi sang giai đoạn sau.
 \item \textbf{Phần mềm}: Python 3.12, NumPy 2.5.1, pandas 2.2.3, scikit-learn 1.9.0, SciPy 1.18.0, Matplotlib 3.11.2; biên dịch báo cáo bằng \texttt{tectonic} (XeTeX), phông TeX Gyre.
 \item \textbf{Phong cách biểu đồ}: theo quy ước của repo \emph{figures4papers} (đọc qua công cụ tóm tắt nên không phải bản chép nguyên văn); bảng màu gốc của repo trượt kiểm tra màu (xanh \texttt{\#0F4D92} quá tối, \texttt{\#42949E} quá xám) nên dùng \texttt{\#3775BA} và \texttt{\#2E9C8A} trong cùng họ màu, và thứ tự bốn màu được cố định theo bộ đạt kiểm tra.
-\item Lịch sử hội thoại chính với AI được nộp kèm theo (file riêng); nhật ký quyết định đầy đủ gồm 31 mục nằm ở \var{docs/ai_log.md}.
+\item Nhật ký cộng tác và quyết định đầy đủ (31 mục): \href{https://github.com/quanai06/midterm_datamining/blob/main/docs/ai_log.md}{\texttt{docs/ai\_log.md}}.
 \end{itemize}
 
 \subsection{Cách kiểm chứng sản phẩm của AI}
-Mọi kết luận trong báo cáo được rút từ số đo thực chạy; mọi script có kiểm tra nghiệm thu tự động (42, 15, 13 kiểm tra cho câu a, c, d) và chạy lại cho kết quả giống hệt (so mã băm); các hình đều được mở và xem bằng mắt (nhiều lỗi bố cục chỉ lộ khi xem hình);
+Mọi kết luận trong báo cáo được rút từ số đo thực chạy; mọi script có kiểm tra nghiệm thu tự động (42, 15, 13 kiểm tra cho các bước sinh dữ liệu, tiền xử lý, chuẩn bị) và chạy lại cho kết quả giống hệt (so mã băm); các hình đều được mở và xem bằng mắt (nhiều lỗi bố cục chỉ lộ khi xem hình);
 bước đánh giá với dữ liệu sạch chỉ chạy sau khi kết quả đã đóng băng.
 
 \subsection{Những chỗ AI sai hoặc được chỉnh sửa}
 \begingroup\small
-\begin{longtable}{>{\raggedright\arraybackslash}p{1.1cm}>{\raggedright\arraybackslash}p{7.3cm}>{\raggedright\arraybackslash}p{6.4cm}}
+\begin{longtable}{>{\raggedright\arraybackslash}p{1.8cm}>{\raggedright\arraybackslash}p{6.7cm}>{\raggedright\arraybackslash}p{6.1cm}}
 \caption{Các sửa đổi chính (trích từ \var{docs/ai_log.md}; mục đầy đủ có đánh số).}\label{tab:ailog}\\
 \toprule
-Câu & Vấn đề & Cách xử lý\\
+Bước & Vấn đề & Cách xử lý\\
 \midrule
 \endfirsthead
 \toprule
-Câu & Vấn đề & Cách xử lý\\
+Bước & Vấn đề & Cách xử lý\\
 \midrule
 \endhead
 \bottomrule
 \endfoot
-a & Thiết kế đầu quá dễ (ARI sạch 0,98); mô hình nhân quả đầu lại quá khó (ARI 0,47). & Hiệu chỉnh trên dữ liệu sạch; không nới ngưỡng ``một thuộc tính đơn lẻ'' khi thấy $0{,}72>0{,}70$ mà chỉnh dữ liệu.\\
-a & Kiểm tra ``nhiễu không thiên lệch'' dùng trung bình của tỉ số (sai phương pháp); ngoại lai ``đại lý'' không cực trị; ``cá voi'' 309 đơn với 36 phiên/tháng (phi nghiệp vụ, bộ kiểm tra không bắt được). & Sửa phép kiểm tra; đặt cường độ theo hàng rào Tukey; thêm kiểm tra số đơn $\le$ 1 đơn/phiên.\\
-chung & Sinh viên hai lần dán nhầm đề dạng giám sát (dự đoán \var{purchased_Y}). & AI nêu xung đột, không tạo nhãn mục tiêu, giữ bài toán không giám sát.\\
-b & Quy tắc chọn cột cần log chọn nhầm hai biến tỉ lệ; $\chi^2$ cho biến thiếu dùng số kỳ vọng $<5$; trung bình theo thiết bị bị một dòng 1440 phút làm méo. & Đổi quy tắc (ghi nhận là đổi sau khi xem); kiểm định hoán vị (kết luận từ ``có ý nghĩa'' thành ``chưa đủ bằng chứng''); dùng trung vị.\\
-b & Thanh màu đè lên panel, chú giải đè lên cột, nhãn log chồng nhau, trục PCA lật dấu. & Chỉ lộ khi xem hình; sửa bố cục.\\
-c & Gán $\mathrm{AOV}=\mathrm{total}/n$ cho C0062 (sinh viên đặt điều kiện: chỉ khi từ điển xác nhận đẳng thức chính xác). & Từ điển ghi ``$\sim$'' nên không gán; điền bằng mô hình.\\
-c & Kiểm tra ``cực trị không bị sửa'' viết ở mức dòng (trượt oan); ngưỡng ``lặp tối đa 3 lần'' tùy tiện. & Đổi sang mức ô; thay bằng bootstrap p95 (đổi sau khi thấy trượt; dữ liệu không đổi).\\
-c & Ước lượng che ô lạc quan cho thời lượng phiên (3,04 so với 3,79 phút thực đo); ô \texttt{recency} của C0242 điền sai (210 so với 69). & Ghi vào hạn chế; không đổi quy trình theo dữ liệu sạch (chống rò rỉ).\\
-d & Sinh viên nói đã thống nhất phương án khi chưa xem đề xuất; so khớp tên cột bằng chuỗi con làm sai bảng tỉ trọng khoảng cách của \texttt{age}. & AI nêu rõ đây là lựa chọn của AI để bác bỏ khi review; sửa so khớp và thêm 2 kiểm tra (13/13).\\
-e & Liên kết \texttt{average} của phân cấp Gower cho kết quả rất yếu; Silhouette thang riêng của B0 cao (0,95) với ARI 0,005; kỳ vọng ``câu d cải thiện hơn câu c'' không được ủng hộ ở $k=4$. & Thêm \texttt{complete} và chọn bằng chỉ số nội tại, in cả hai; so ở thang chung; ghi đúng kết quả đo.\\
+Sinh dữ liệu & Thiết kế đầu quá dễ (ARI sạch 0,98); mô hình nhân quả đầu lại quá khó (ARI 0,47). & Hiệu chỉnh trên dữ liệu sạch; không nới ngưỡng ``một thuộc tính đơn lẻ'' khi thấy $0{,}72>0{,}70$ mà chỉnh dữ liệu.\\
+Sinh dữ liệu & Kiểm tra ``nhiễu không thiên lệch'' dùng trung bình của tỉ số (sai phương pháp); ngoại lai ``đại lý'' không cực trị; ``cá voi'' 309 đơn với 36 phiên/tháng (phi nghiệp vụ, bộ kiểm tra không bắt được). & Sửa phép kiểm tra; đặt cường độ theo hàng rào Tukey; thêm kiểm tra số đơn $\le$ 1 đơn/phiên.\\
+Chung & Sinh viên hai lần dán nhầm đề dạng giám sát (dự đoán \var{purchased_Y}). & AI nêu xung đột, không tạo nhãn mục tiêu, giữ bài toán không giám sát.\\
+Hiểu dữ liệu & Quy tắc chọn cột cần log chọn nhầm hai biến tỉ lệ; $\chi^2$ cho biến thiếu dùng số kỳ vọng $<5$; trung bình theo thiết bị bị một dòng 1440 phút làm méo. & Đổi quy tắc (ghi nhận là đổi sau khi xem); kiểm định hoán vị (kết luận từ ``có ý nghĩa'' thành ``chưa đủ bằng chứng''); dùng trung vị.\\
+Hiểu dữ liệu & Thanh màu đè lên panel, chú giải đè lên cột, nhãn log chồng nhau, trục PCA lật dấu. & Chỉ lộ khi xem hình; sửa bố cục.\\
+Tiền xử lý & Gán $\mathrm{AOV}=\mathrm{total}/n$ cho C0062 (sinh viên đặt điều kiện: chỉ khi từ điển xác nhận đẳng thức chính xác). & Từ điển ghi ``$\sim$'' nên không gán; điền bằng mô hình.\\
+Tiền xử lý & Kiểm tra ``cực trị không bị sửa'' viết ở mức dòng (trượt oan); ngưỡng ``lặp tối đa 3 lần'' tùy tiện. & Đổi sang mức ô; thay bằng bootstrap p95 (đổi sau khi thấy trượt; dữ liệu không đổi).\\
+Tiền xử lý & Ước lượng che ô lạc quan cho thời lượng phiên (3,04 so với 3,79 phút thực đo); ô \texttt{recency} của C0242 điền sai (210 so với 69). & Ghi vào hạn chế; không đổi quy trình theo dữ liệu sạch (chống rò rỉ).\\
+Chuẩn bị & Sinh viên nói đã thống nhất phương án khi chưa xem đề xuất; so khớp tên cột bằng chuỗi con làm sai bảng tỉ trọng khoảng cách của \texttt{age}. & AI nêu rõ đây là lựa chọn của AI để bác bỏ khi review; sửa so khớp và thêm 2 kiểm tra (13/13).\\
+Phân cụm & Liên kết \texttt{average} của phân cấp Gower cho kết quả rất yếu; Silhouette thang riêng của B0 cao (0,95) với ARI 0,005; kỳ vọng ``bước chuẩn bị cải thiện hơn bước tiền xử lý'' không được ủng hộ ở $k=4$. & Thêm \texttt{complete} và chọn bằng chỉ số nội tại, in cả hai; so ở thang chung; ghi đúng kết quả đo.\\
 \end{longtable}
 \endgroup
 \FloatBarrier

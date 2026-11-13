@@ -1,4 +1,4 @@
-\section{Câu a: Thiết kế và sinh dữ liệu}
+\section{Thiết kế và sinh dữ liệu}
 \label{sec:a}
 
 \subsection{Thuộc tính và lý do lựa chọn}
@@ -78,7 +78,7 @@ Script sinh dữ liệu tự kiểm tra 42 ràng buộc (đạt 42/42): đúng $
 tái lập (md5 giống hệt giữa các lần chạy), nhãn ẩn không có mặt trong file dữ liệu.
 
 Độ khó của bài toán được hiệu chỉnh \emph{chỉ trên dữ liệu sạch D0} và trước khi xem kết quả xử lý nhiễu. Hai lần đầu đều sai: thiết kế ban đầu quá dễ (K-Means đạt ARI $0{,}98$,
-sẽ gây hiệu ứng trần ở câu e), mô hình nhân quả đầu tiên lại quá khó (ARI $0{,}47$). Cấu hình cuối cho ARI của K-Means trên D0 bằng $0{,}73$ (hạt giống chính) và $0{,}71\pm0{,}05$ (10 hạt giống sinh mới);
+sẽ gây hiệu ứng trần ở bước phân cụm), mô hình nhân quả đầu tiên lại quá khó (ARI $0{,}47$). Cấu hình cuối cho ARI của K-Means trên D0 bằng $0{,}73$ (hạt giống chính) và $0{,}71\pm0{,}05$ (10 hạt giống sinh mới);
 độ chính xác của cây quyết định chỉ dùng một thuộc tính tốt nhất là $0{,}68$ ($<0{,}70$, ngưỡng đặt trước), tức không thuộc tính đơn lẻ nào quyết định phân khúc.
 Hai lỗi của cách tạo ngoại lai được phát hiện và sửa: hai ``đại lý'' ban đầu không phải cực trị thống kê, và một ``cá voi'' có 309 đơn/năm với 36 phiên/tháng (phi nghiệp vụ; bộ kiểm tra tự động không bắt được, phải đọc nhật ký mới thấy).
 
