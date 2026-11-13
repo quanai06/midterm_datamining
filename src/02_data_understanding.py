@@ -387,10 +387,12 @@ def fig_correlation(sp, pe, cv, eps):
     fig, axes = plt.subplots(1, 3, figsize=(23, 9), gridspec_kw={"width_ratios": [1, 1, 0.04]})
     for ax, M, t, l in [(axes[0], sp, "Spearman (rank-based, robust)", "a"), (axes[1], pe, "Pearson on raw values", "b")]:
         im = ax.imshow(M.to_numpy(), cmap=vs.CMAP_DIV, vmin=-1, vmax=1)
-        ax.set_xticks(range(len(M))); ax.set_xticklabels(M.columns, rotation=45, ha="right"); ax.set_yticks(range(len(M))); ax.set_yticklabels(M.index)
+        ax.set_xticks(range(len(M))); ax.set_xticklabels(M.columns, rotation=55, ha="right", fontsize=11); ax.set_yticks(range(len(M))); ax.set_yticklabels(M.index, fontsize=11)
         for i in range(len(M)):
             for j in range(len(M)):
-                v = M.iloc[i, j]; ax.text(j, i, f"{v:.2f}", ha="center", va="center", fontsize=9, color="white" if abs(v) > .6 else vs.NEUTRAL["ink"])
+                v = M.iloc[i, j]
+                if i != j and abs(v) >= 0.5:  # chỉ ghi số cho cặp tương quan mạnh để chữ đủ lớn và không chồng nhau
+                    ax.text(j, i, f"{v:.1f}", ha="center", va="center", fontsize=11, color="white" if abs(v) > .6 else vs.NEUTRAL["ink"])
         ax.set_title(t, fontsize=13); vs.panel_label(ax, l)
         for s in ax.spines.values(): s.set_visible(False)
     fig.colorbar(im, cax=axes[2], label="correlation")
@@ -444,15 +446,15 @@ def fig_outliers(F, per_feat):
 
 
 def fig_distance(df, num, rawz, rob, share, hard, d_a):
-    fig, axes = plt.subplots(2, 2, figsize=(17, 12))
+    fig, axes = plt.subplots(2, 2, figsize=(17, 14))
     ax = axes[0, 0]; s = (100 * share).sort_values()
     ax.barh(s.index, s.values, color=vs.PALETTE["blue"], edgecolor="white", lw=.6)
     for y, v in enumerate(s.values): ax.text(v + .5, y, f"{v:.2f}%", va="center", fontsize=10)
-    ax.set_xlabel("Share of total variance, unscaled (%)"); ax.set_xlim(0, max(s.values) * 1.2); vs.panel_label(ax, "a")
+    ax.tick_params(axis="y", labelsize=11); ax.set_xlabel("Share of total variance, unscaled (%)"); ax.set_xlim(0, max(s.values) * 1.35); vs.panel_label(ax, "a")
     ax = axes[0, 1]
     for name, Z, c, ls in [("z-score on raw", rawz, vs.PALETTE["red"], "--"), ("log1p + median/IQR", rob, vs.PALETTE["blue"], "-")]:
         k = knn_dist(Z); xs = np.sort(k); ax.plot(xs, np.arange(1, len(xs) + 1) / len(xs), color=c, ls=ls, label=name)
-    ax.set_xscale("log"); ax.set_xlabel("distance to 5th nearest neighbour"); ax.set_ylabel("ECDF"); ax.legend(); vs.panel_label(ax, "b")
+    ax.set_xscale("log"); ax.set_xlabel("distance to 5th nearest neighbour"); ax.set_ylabel("ECDF"); ax.legend(loc="lower right", fontsize=11); vs.panel_label(ax, "b")
     ax = axes[1, 0]
     for Z, ttl, l, c in [(rawz, "z-score on raw", "c", vs.PALETTE["red"]), (rob, "log1p + median/IQR", "d", vs.PALETTE["blue"])]:
         pass

@@ -405,7 +405,8 @@ def main():
         for i, cval in enumerate(cats):
             m = (lab == cval)
             ax.scatter(Z[m, 0], Z[m, 1], s=34, marker=mk[i], color=vs.SERIES[i % 4], alpha=.8, edgecolor="none", label=str(cval) if names else f"cluster {cval + 1} (n={int(m.sum())})")
-        ax.set_title(ttl, fontsize=12); ax.set_xlabel(f"PC1 of X_main ({100 * P2.explained_variance_ratio_[0]:.0f}%)"); ax.set_ylabel(f"PC2 ({100 * P2.explained_variance_ratio_[1]:.0f}%)"); ax.legend(fontsize=9); vs.panel_label(ax, l)
+        ax.set_title(ttl, fontsize=12); ax.set_xlabel(f"PC1 of X_main ({100 * P2.explained_variance_ratio_[0]:.0f}%)"); ax.set_ylabel(f"PC2 ({100 * P2.explained_variance_ratio_[1]:.0f}%)")
+        ax.legend(fontsize=11, loc="upper center", bbox_to_anchor=(0.5, -0.28), ncol=2, columnspacing=0.8, handletextpad=0.3); vs.panel_label(ax, l)
     vs.finalize_figure(fig, FIG, "figE4_pca_embedding")
 
     fig, axes = plt.subplots(1, 3, figsize=(24, 5.6), gridspec_kw={"width_ratios": [1, 1, 0.03]})

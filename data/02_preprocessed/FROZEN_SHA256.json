@@ -6,7 +6,7 @@
   "data/02_preprocessed/variants/preferred_category_variants.csv": "5a60a49a22a90eff941bc7124d4a79de360788913acde266d4702e5b9404140c"
  },
  "input_raw_corrupted_sha256": "3c824e9bfc4b25687a1f250fc16721468af2e4d50fdfdf0c70014e9aaa585393",
- "script_sha256": "86ad10b80dcb6615f2587af2018ed1358f0a15d339b89d55deeb5ada1f8f934a",
+ "script_sha256": "c1e6226247c8dca0b5f1a6f3705be9577746dd652bace1446f6abccbd9235417",
  "seed": 42,
  "n_reps": 50,
  "mask_frac": 0.15,

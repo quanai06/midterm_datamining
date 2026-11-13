@@ -13,7 +13,7 @@ Sai khác có chủ đích:
 | Xanh chính | `#0F4D92` | `#3775BA` | bộ kiểm tra màu (skill dataviz, `validate_palette.js`) báo trượt dải sáng: quá tối so với các màu còn lại |
 | Xanh lam-lục | `#42949E` | `#2E9C8A` | trượt ngưỡng sắc độ (đọc như màu xám); cùng họ màu |
 | Thứ tự màu | | xanh, đỏ, lam-lục, tím | chỉ thứ tự này đạt mọi kiểm tra ở các cặp liền kề (CVD dE 9,8; vùng nhìn bình thường dE >= 15) |
-| Cỡ chữ / nét | 15-16 / 2,5 | 13 / 1,8 | hình lưới nhiều panel khổ lớn (tới 22 x 8 inch) |
+| Cỡ chữ / nét | 15-16 / 2,5 | 14 (chữ nhỏ nâng lên tối thiểu 11) / 1,8; khổ hình nhân 0,5 | hình lưới nhiều panel; chữ hiệu dụng khi chèn vào báo cáo >= 7 pt |
 | Viền cột | đen dày | trắng mảnh | mật độ cột cao; hatch dùng để phân biệt |
 
 Bộ 4 màu `#3775BA, #B64342, #2E9C8A, #9A4D8E` đạt: dải sáng, sắc độ, CVD, vùng nhìn bình thường (cặp liền kề), tương phản >= 3:1 trên nền trắng.

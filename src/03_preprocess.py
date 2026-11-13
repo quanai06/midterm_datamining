@@ -361,6 +361,9 @@ def heap_table(df, proc, audit):
     return pd.DataFrame(rows)
 
 
+SHORT2 = {"median": "median", "median_by_device": "med|dev", "knn5": "KNN5", "knn10": "KNN10", "iterative": "iterative"}
+
+
 def fig_selection(res):
     sel, chosen = res["sel"], res["chosen"]
     fig, axes = plt.subplots(2, 4, figsize=(23, 10))
@@ -373,21 +376,19 @@ def fig_selection(res):
                edgecolor=vs.NEUTRAL["ink"], lw=.8, hatch=None)
         for xi, m, b in zip(x, t.method, ax.patches):
             b.set_hatch(HATCH[m])
-        for xi, (mae, se) in enumerate(zip(t["mae_lens_mean"], t["mae_lens_se"])):
-            ax.text(xi, mae + se + 0.01, f"{t['mae_orig_mean'].iloc[xi]:.3g}", ha="center", fontsize=10)
         ax.axhline(sel[col]["threshold"], color=vs.NEUTRAL["ink"], ls="--", lw=1.2)
-        ax.set_xticks(x); ax.set_xticklabels([SHORT[m] for m in t.method], rotation=35, ha="right")
-        ax.set_title(f"{col}\nselected: {SHORT[chosen[col]]} (labels: MAE in {unit[col]})", fontsize=11)
-        ax.set_ylabel("MAE on selection scale" if l in "ae" else ""); vs.panel_label(ax, l)
+        ax.set_xticks(x); ax.set_xticklabels([SHORT2[m] for m in t.method], rotation=45, ha="right", fontsize=11)
+        ax.set_title(col, fontsize=12)
+        ax.set_ylabel("MAE (selection scale)" if l in "ae" else "", fontsize=11); vs.panel_label(ax, l)
     ax = axes.ravel()[7]
     ct = res["cat_tab"]
     x = np.arange(len(ct))
     ax.bar(x, ct["acc_mean"], yerr=ct["acc_se"], capsize=3, color=vs.NEUTRAL["light"], edgecolor=vs.NEUTRAL["ink"], lw=.8)
     for b, h in zip(ax.patches, ["", "//", "..", "xx"]):
         b.set_hatch(h)
-    ax.axhline(0.2, color=vs.NEUTRAL["mid"], ls=":", lw=1.5, label="chance (0.20)"); ax.legend(loc="upper left")
-    ax.set_xticks(x); ax.set_xticklabels(ct["method"], rotation=35, ha="right"); ax.set_ylabel("accuracy (masked)"); ax.set_ylim(0, .6)
-    ax.set_title("preferred_category (kept as 'unknown')", fontsize=11); vs.panel_label(ax, "h")
+    ax.axhline(0.2, color=vs.NEUTRAL["mid"], ls=":", lw=1.5)
+    ax.set_xticks(x); ax.set_xticklabels(["mode", "mode|dev", "mode|tier", "KNN7"], rotation=45, ha="right", fontsize=11); ax.set_ylabel("accuracy (masked)", fontsize=11); ax.set_ylim(0, .6)
+    ax.set_title("preferred_category", fontsize=12); vs.panel_label(ax, "h")
     vs.finalize_figure(fig, FIG, "fig01_imputer_selection")
 
 
