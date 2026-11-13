@@ -1,0 +1,8 @@
+column,n_imputed,std_imputed,std_observed,std_ratio,max_repeat_of_one_value,bootstrap_p95_max_repeat
+age,22,5.876985710290696,10.355843023900393,0.5675043255027253,4,5.0
+avg_order_value,1,,214.6097229387312,,1,
+avg_session_minutes,32,9.7395679302391,10.863786146984257,0.8965169047388478,2,3.0
+cart_abandon_rate,1,,0.24102408253640412,,1,
+discount_usage_rate,1,,0.35010735830848194,,1,
+recency_days,1,,101.29479152916558,,1,
+sessions_per_month,1,,8.196848905919367,,1,

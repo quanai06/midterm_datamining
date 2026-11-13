@@ -1,0 +1,5 @@
+column,mean_change_pct,std_change_pct,noise_sd,snr_var_ratio,corr_D0_D1,ks_stat,wasserstein
+avg_order_value,-0.63508,2.55378,8.10473,21.92757,0.97808,0.04231,1.93877
+recency_days,0.29274,-0.29303,3.90387,673.93752,0.99926,0.03462,1.15385
+avg_session_minutes,0.91609,2.57106,2.31267,20.4684,0.97651,0.03462,0.59269
+sessions_per_month,0.40528,1.62335,1.40377,28.06705,0.9826,0.05,0.27808

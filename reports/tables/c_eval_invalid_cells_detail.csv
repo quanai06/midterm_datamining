@@ -1,0 +1,8 @@
+customer_id,column,before,after,d0,baseline_median
+C0226,age,150.0,44.0,47.0,32.0
+C0062,avg_order_value,3093.0,40.75,34.53,43.73
+C0242,recency_days,-12.0,210.0,69.0,43.0
+C0004,discount_usage_rate,1.8,0.905,0.954,0.204
+C0155,sessions_per_month,999.0,8.7,4.9,10.0
+C0068,avg_session_minutes,1440.0,4.1,3.4,8.5
+C0069,cart_abandon_rate,1.35,0.36,0.387,0.425

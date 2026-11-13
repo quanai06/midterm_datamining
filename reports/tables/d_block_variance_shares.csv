@@ -1,0 +1,5 @@
+,A. z-score ca dummy,B. dummy 0/1 khong scale,C. dummy x w (chinh)
+numeric,0.45,0.7286,0.6943
+tier+app,0.1,0.1619,0.1543
+device,0.15,0.0478,0.0771
+category,0.3,0.0616,0.0743

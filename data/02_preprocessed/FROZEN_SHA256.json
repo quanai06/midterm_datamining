@@ -1,0 +1,28 @@
+{
+ "frozen_files": {
+  "data/02_preprocessed/data_after_preprocessing.csv": "eee9568a73267203497c91a332a62f382304b5b3c46b55f600613632c66ded88",
+  "data/02_preprocessed/preprocessing_audit.csv": "e8a7ff801b7368146e03670404ff8f900d6dba8a663b6173b0a92bde26eade2b",
+  "data/02_preprocessed/preprocessing_flags.csv": "6ed310f50f0293303b6ade0aee1fc5aefb9cee8a304e139c6dd4a81c0b7c3a03",
+  "data/02_preprocessed/variants/preferred_category_variants.csv": "5a60a49a22a90eff941bc7124d4a79de360788913acde266d4702e5b9404140c"
+ },
+ "input_raw_corrupted_sha256": "3c824e9bfc4b25687a1f250fc16721468af2e4d50fdfdf0c70014e9aaa585393",
+ "script_sha256": "86ad10b80dcb6615f2587af2018ed1358f0a15d339b89d55deeb5ada1f8f934a",
+ "seed": 42,
+ "n_reps": 50,
+ "mask_frac": 0.15,
+ "versions": {
+  "numpy": "2.5.1",
+  "pandas": "2.2.3",
+  "sklearn": "1.9.0"
+ },
+ "chosen_methods": {
+  "age": "knn10",
+  "avg_order_value": "iterative",
+  "recency_days": "iterative",
+  "discount_usage_rate": "knn5",
+  "sessions_per_month": "knn10",
+  "avg_session_minutes": "iterative",
+  "cart_abandon_rate": "knn5"
+ },
+ "note": "Sau khi file này được ghi, chỉ 03b_evaluate_preprocessing.py được mở D0 để đối chiếu."
+}

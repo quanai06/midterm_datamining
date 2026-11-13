@@ -1,0 +1,241 @@
+{
+ "n_rows": 260,
+ "n_cols_features": 14,
+ "id_unique": true,
+ "duplicate_rows_excluding_id": 0,
+ "skew_raw": {
+  "age": 3.33,
+  "n_orders_12m": 3.33,
+  "avg_order_value": 9.19,
+  "total_spend_12m": 8.52,
+  "recency_days": 1.69,
+  "discount_usage_rate": 0.83,
+  "sessions_per_month": 15.7,
+  "avg_session_minutes": 14.84,
+  "pages_per_session": 1.64,
+  "cart_abandon_rate": 0.74
+ },
+ "bowley_skew": {
+  "age": 0.067,
+  "n_orders_12m": 0.556,
+  "avg_order_value": 0.241,
+  "total_spend_12m": 0.584,
+  "recency_days": 0.345,
+  "discount_usage_rate": 0.708,
+  "sessions_per_month": -0.021,
+  "avg_session_minutes": 0.513,
+  "pages_per_session": 0.49,
+  "cart_abandon_rate": 0.567
+ },
+ "skew_excl_violations": {
+  "age": 0.43,
+  "n_orders_12m": 3.33,
+  "avg_order_value": 9.19,
+  "total_spend_12m": 8.52,
+  "recency_days": 1.69,
+  "discount_usage_rate": 0.7,
+  "sessions_per_month": 1.16,
+  "avg_session_minutes": 2.06,
+  "pages_per_session": 1.64,
+  "cart_abandon_rate": 0.67
+ },
+ "log_cols": [
+  "n_orders_12m",
+  "avg_order_value",
+  "total_spend_12m",
+  "recency_days",
+  "sessions_per_month",
+  "avg_session_minutes",
+  "pages_per_session"
+ ],
+ "std_over_robust_sd": {
+  "age": 1.15,
+  "n_orders_12m": 1.93,
+  "avg_order_value": 10.62,
+  "total_spend_12m": 9.33,
+  "recency_days": 1.53,
+  "discount_usage_rate": 0.65,
+  "sessions_per_month": 7.67,
+  "avg_session_minutes": 11.14,
+  "pages_per_session": 1.4,
+  "cart_abandon_rate": 0.83
+ },
+ "n_domain_violation_cells": 6,
+ "n_domain_violation_rows": 6,
+ "domain_violations": {
+  "age": 150.0,
+  "recency_days": -12.0,
+  "discount_usage_rate": 1.8,
+  "sessions_per_month": 999.0,
+  "avg_session_minutes": 1440.0,
+  "cart_abandon_rate": 1.35
+ },
+ "missing_pct": {
+  "age": 8.08,
+  "avg_session_minutes": 11.92,
+  "preferred_category": 5.0
+ },
+ "missing_rate_session_minutes_by_device": {
+  "desktop": 0.218,
+  "mobile": 0.064,
+  "tablet": 0.122
+ },
+ "missing_tests_top": [
+  {
+   "missing_col": "preferred_category",
+   "other": "device_type",
+   "test": "Chi2",
+   "p_asymptotic": 0.0006,
+   "p": 0.0015,
+   "p_bonferroni": 0.0585,
+   "effect": 0.2398,
+   "min_expected": 2.05
+  },
+  {
+   "missing_col": "avg_session_minutes",
+   "other": "device_type",
+   "test": "Chi2",
+   "p_asymptotic": 0.0034,
+   "p": 0.0037,
+   "p_bonferroni": 0.1443,
+   "effect": 0.209,
+   "min_expected": 4.8885
+  },
+  {
+   "missing_col": "preferred_category",
+   "other": "app_installed",
+   "test": "Chi2",
+   "p_asymptotic": 0.0674,
+   "p": 0.04,
+   "p_bonferroni": 1.0,
+   "effect": 0.1134,
+   "min_expected": 4.45
+  },
+  {
+   "missing_col": "avg_session_minutes",
+   "other": "avg_order_value",
+   "test": "Mann-Whitney",
+   "p_asymptotic": 0.0765,
+   "p": 0.0765,
+   "p_bonferroni": 1.0,
+   "effect": 0.1962,
+   "min_expected": NaN
+  },
+  {
+   "missing_col": "avg_session_minutes",
+   "other": "membership_tier",
+   "test": "Chi2",
+   "p_asymptotic": 0.1068,
+   "p": 0.1068,
+   "p_bonferroni": 1.0,
+   "effect": 0.1312,
+   "min_expected": 5.0077
+  },
+  {
+   "missing_col": "preferred_category",
+   "other": "total_spend_12m",
+   "test": "Mann-Whitney",
+   "p_asymptotic": 0.1956,
+   "p": 0.1956,
+   "p_bonferroni": 1.0,
+   "effect": -0.2133,
+   "min_expected": NaN
+  }
+ ],
+ "top_pairs": [
+  {
+   "a": "n_orders_12m",
+   "b": "total_spend_12m",
+   "spearman": 0.92,
+   "pearson_raw": 0.767
+  },
+  {
+   "a": "avg_session_minutes",
+   "b": "pages_per_session",
+   "spearman": 0.848,
+   "pearson_raw": 0.049
+  },
+  {
+   "a": "n_orders_12m",
+   "b": "recency_days",
+   "spearman": -0.746,
+   "pearson_raw": -0.371
+  },
+  {
+   "a": "sessions_per_month",
+   "b": "pages_per_session",
+   "spearman": 0.739,
+   "pearson_raw": 0.053
+  },
+  {
+   "a": "n_orders_12m",
+   "b": "cart_abandon_rate",
+   "spearman": -0.725,
+   "pearson_raw": -0.438
+  },
+  {
+   "a": "total_spend_12m",
+   "b": "recency_days",
+   "spearman": -0.711,
+   "pearson_raw": -0.2
+  }
+ ],
+ "vif_rank": {
+  "total_spend_12m": 23.18,
+  "n_orders_12m": 23.11,
+  "pages_per_session": 5.6,
+  "avg_order_value": 4.33,
+  "avg_session_minutes": 3.75,
+  "cart_abandon_rate": 3.13,
+  "sessions_per_month": 3.12,
+  "discount_usage_rate": 2.42,
+  "recency_days": 2.36,
+  "age": 1.35
+ },
+ "pc_for_80_90": [
+  3,
+  5
+ ],
+ "outlier_rows_by_method": {
+  "domain_rules": 6,
+  "tukey_1.5": 94,
+  "tukey_3": 38,
+  "robust_z_3.5": 33,
+  "identity_mismatch": 1,
+  "LOF_20": 10
+ },
+ "hard_error_rows": 7,
+ "identity_sd_robust": 0.1642,
+ "identity_sd_std": 0.3115,
+ "variance_share_raw_pct": {
+  "total_spend_12m": 99.593,
+  "avg_order_value": 0.318,
+  "recency_days": 0.04,
+  "avg_session_minutes": 0.031,
+  "sessions_per_month": 0.015,
+  "n_orders_12m": 0.003,
+  "age": 0.001,
+  "pages_per_session": 0.0,
+  "discount_usage_rate": 0.0,
+  "cart_abandon_rate": 0.0
+ },
+ "distance_lens": {
+  "raw_z": {
+   "share_pairs_with_hard_rows": 0.3139,
+   "knn5_median": 0.8431,
+   "knn5_p95": 2.6963,
+   "knn5_max": 16.0694,
+   "hopkins": 0.9397
+  },
+  "robust_log": {
+   "share_pairs_with_hard_rows": 0.1516,
+   "knn5_median": 1.1362,
+   "knn5_p95": 1.6094,
+   "knn5_max": 7.0969,
+   "hopkins": 0.8347
+  },
+  "raw_unscaled": {
+   "share_pairs_with_hard_rows": 0.03
+  }
+ }
+}

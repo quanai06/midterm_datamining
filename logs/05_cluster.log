@@ -1,0 +1,167 @@
+====================================================================================
+CÂU E - PHÂN CỤM. Đầu vào đã đóng băng (mã băm câu c, d khớp). N = 260 ở mọi nhánh chính.
+====================================================================================
+
+--- 0. Không gian đặc trưng của từng nhánh (số hàng x số cột) ---
+    rows cols scaled
+B0   260   20  False
+B1   260   20   True
+L2   260   21   True
+L3   260   19   True
+REF  260   19   True
+
+--- 1. Chọn k (Silhouette cao nhất, thang riêng của từng nhánh; DB thấp = tốt, CH cao = tốt) ---
+pipeline      B0      B1      L2      L3     REF
+k                                               
+2         0.9482  0.1110  0.1647  0.2453  0.2499
+3         0.8785  0.1407  0.1598  0.2663  0.2706
+4         0.8738  0.1509  0.1661  0.2989  0.3072
+5         0.7652  0.1590  0.1751  0.2587  0.2669
+6         0.7666  0.1729  0.1805  0.2356  0.2459
+7         0.7626  0.1798  0.1984  0.2318  0.2270
+8         0.6434  0.1633  0.1899  0.1821  0.1699
+
+--- 1b. k được chọn bằng Silhouette ---
+B0     2
+B1     7
+L2     7
+L3     4
+REF    4
+
+--- 1c. Davies-Bouldin theo k ---
+pipeline     B0     B1     L2     L3    REF
+k                                          
+2         0.404  2.232  1.920  1.394  1.389
+3         0.474  2.309  2.141  1.523  1.489
+4         0.274  2.040  1.888  1.277  1.251
+5         0.358  1.628  1.605  1.515  1.518
+6         0.394  1.584  1.605  1.685  1.665
+7         0.311  1.512  1.464  1.611  1.646
+8         0.409  1.271  1.460  1.766  1.915
+
+--- 2. Kết quả K-Means, k = 4 cố định (số phân khúc thiết kế, chỉ dùng để so sánh cùng k) ---
+          k  n_rows  n_cols     ARI     NMI  purity  sil_own  db_own     ch_own  sil_common  db_common  min_cluster  max_cluster  clusters_under_5pct              sizes
+pipeline                                                                                                                                                                
+B0        4     260      20  0.0352  0.1301  0.3577   0.8738  0.2743  1512.8006      0.1301     1.4453            1          245                    3   245 / 12 / 2 / 1
+B1        4     260      20  0.6113  0.5712  0.8346   0.1509  2.0401    30.4492      0.2538     1.4494           45           82                    0  82 / 68 / 65 / 45
+L2        4     260      21  0.7010  0.6641  0.8769   0.1661  1.8881    38.6530      0.2735     1.3767           43           82                    0  82 / 68 / 67 / 43
+L3        4     260      19  0.7451  0.6978  0.8962   0.2989  1.2767    93.7587      0.2989     1.2767           46           77                    0  77 / 74 / 63 / 46
+REF       4     260      19  0.7766  0.7371  0.9115   0.3072  1.2515   100.5790      0.2951     1.2926           45           75                    0  75 / 74 / 66 / 45
+
+--- 2. Kết quả K-Means, k chọn theo Silhouette của từng nhánh ---
+          k  n_rows  n_cols     ARI     NMI  purity  sil_own  db_own    ch_own  sil_common  db_common  min_cluster  max_cluster  clusters_under_5pct                            sizes
+pipeline                                                                                                                                                                             
+B0        2     260      20  0.0049  0.0276  0.3115   0.9482  0.4041  587.8036      0.2169     1.0225            3          257                    1                          257 / 3
+B1        7     260      20  0.4343  0.4323  0.7538   0.1798  1.5115   27.3724      0.1174     1.8292            1           65                    1  65 / 64 / 36 / 34 / 32 / 28 / 1
+L2        7     260      21  0.5512  0.5449  0.8192   0.1984  1.4641   32.8284      0.1747     2.1225            2           81                    1  81 / 61 / 36 / 35 / 32 / 13 / 2
+L3        4     260      19  0.7451  0.6978  0.8962   0.2989  1.2767   93.7587      0.2989     1.2767           46           77                    0                77 / 74 / 63 / 46
+REF       4     260      19  0.7766  0.7371  0.9115   0.3072  1.2515  100.5790      0.2951     1.2926           45           75                    0                75 / 74 / 66 / 45
+
+--- 3. ARI và chênh lệch ARI với khoảng tin cậy 95% (bootstrap 1000 lần theo dòng, ghép cặp) ---
+   setting comparison     ARI  ci_low  ci_high  frac_boot_positive
+0       k4         B0  0.0352  0.0164   0.0611                 NaN
+1       k4         B1  0.6113  0.5152   0.7075                 NaN
+2       k4         L2  0.7010  0.6100   0.7869                 NaN
+3       k4         L3  0.7451  0.6582   0.8325                 NaN
+4       k4        REF  0.7766  0.6934   0.8560                 NaN
+5       k4    L3 - B1  0.1338  0.0578   0.2064               1.000
+6       k4    L3 - L2  0.0441 -0.0243   0.1151               0.893
+7       k4    L2 - B1  0.0898  0.0399   0.1428               1.000
+8       k4    B1 - B0  0.5760  0.4799   0.6708               1.000
+9       k4   REF - L3  0.0315 -0.0073   0.0709               0.939
+10    ksel         B0  0.0049  0.0000   0.0136                 NaN
+11    ksel         B1  0.4343  0.3503   0.5297                 NaN
+12    ksel         L2  0.5512  0.4631   0.6449                 NaN
+13    ksel         L3  0.7451  0.6582   0.8325                 NaN
+14    ksel        REF  0.7766  0.6934   0.8560                 NaN
+15    ksel    L3 - B1  0.3107  0.2239   0.3930               1.000
+16    ksel    L3 - L2  0.1939  0.1005   0.2813               1.000
+17    ksel    L2 - B1  0.1168  0.0569   0.1773               1.000
+18    ksel    B1 - B0  0.4294  0.3455   0.5251               1.000
+19    ksel   REF - L3  0.0315 -0.0073   0.0709               0.939
+
+--- 4. Độ ổn định: ARI giữa phân cụm trên mẫu con 80% (30 lần) và phân cụm đầy đủ; ARI giữa 20 lần chạy n_init = 1 và lần tốt nhất ---
+  pipeline setting  k  subsample80_ARI_mean  subsample80_ARI_sd  single_init_ARI_mean  single_init_ARI_min
+0       B0      k4  4                0.9141              0.1844                1.0000               1.0000
+1       B0    ksel  2                0.7383              0.3000                1.0000               1.0000
+2       B1      k4  4                0.8285              0.1498                0.6850               0.4346
+3       B1    ksel  7                0.6444              0.1524                0.4609               0.2294
+4       L2      k4  4                0.9489              0.0386                0.8228               0.4854
+5       L2    ksel  7                0.6799              0.1112                0.6987               0.4233
+6       L3      k4  4                0.9704              0.0174                0.9579               0.7206
+7       L3    ksel  4                0.9704              0.0174                0.9579               0.7206
+8      REF      k4  4                0.9869              0.0131                0.9962               0.9797
+9      REF    ksel  4                0.9869              0.0131                0.9962               0.9797
+
+--- 5. 7 dòng có ô hỏng nằm ở đâu trong các cụm ---
+  pipeline setting  k  n_repaired_rows  n_clusters_size_le_10  n_small_clusters_mostly_repaired_rows  rows_of_repaired_in_smallest_cluster  smallest_cluster
+0       B0      k4  4                7                      2                                      0                                     0                 1
+1       B0    ksel  2                7                      1                                      0                                     0                 3
+2       B1      k4  4                7                      0                                      0                                     3                45
+3       B1    ksel  7                7                      1                                      1                                     1                 1
+4       L2      k4  4                7                      0                                      0                                     1                43
+5       L2    ksel  7                7                      1                                      0                                     0                 2
+6       L3      k4  4                7                      0                                      0                                     1                46
+7       L3    ksel  4                7                      0                                      0                                     1                46
+
+--- 6. Thuật toán thứ hai: phân cấp trên khoảng cách Gower. Liên kết chọn trước = average; thêm complete và chọn giữa hai loại CHỈ bằng Silhouette Gower (không dùng nhãn); in cả hai ---
+                       pipeline  k   linkage     ARI     NMI  purity  sil_gower  sil_common  min_cluster               sizes  selected_by_gower_silhouette
+0                  B1_gower_raw  4   average  0.0466  0.1483  0.3731     0.1399      0.1304            1    238 / 18 / 3 / 1                          True
+1                  B1_gower_raw  4  complete  0.1258  0.1802  0.4654     0.0759      0.0292           13  123 / 68 / 56 / 13                         False
+2  L2_gower_processed_raw_units  4   average  0.1704  0.3307  0.4538     0.1370      0.1109            1    215 / 42 / 2 / 1                          True
+3  L2_gower_processed_raw_units  4  complete  0.2620  0.3597  0.5923     0.1132      0.1055           20  123 / 68 / 49 / 20                         False
+4             L3_gower_prepared  4   average  0.4868  0.5120  0.7077     0.2569      0.2512            2   119 / 71 / 68 / 2                         False
+5             L3_gower_prepared  4  complete  0.6048  0.6090  0.8385     0.2687      0.2419           43  101 / 62 / 54 / 43                          True
+
+--- 7. Độ nhạy: biến thể từ câu c, d (cùng k; 'ARI_vs_main_labels' đo mức đồng thuận với phân cụm chính) ---
+                                          variant  k  n_rows  n_cols  ARI_vs_truth  NMI_vs_truth  ARI_vs_main_labels  sil_own  ARI_full_run_labels_on_same_rows_vs_truth  dARI_vs_main  dARI_ci_low  dARI_ci_high
+0                                     main X_main  4     260      19        0.7451        0.6978              1.0000   0.2989                                        NaN           NaN          NaN           NaN
+1                                   full_features  4     260      20        0.7636        0.7149              0.9786   0.3017                                        NaN        0.0185       0.0000        0.0477
+2                                 cat_unknown_col  4     260      20        0.7451        0.6978              1.0000   0.2975                                        NaN        0.0000       0.0000        0.0000
+3                                        cat_knn7  4     260      19        0.7451        0.6978              1.0000   0.2992                                        NaN        0.0000       0.0000        0.0000
+4                                        cat_mode  4     260      19        0.7537        0.7058              0.9894   0.2969                                        NaN        0.0087       0.0000        0.0272
+5                                     no_category  4     260      14        0.7712        0.7290              0.9480   0.3252                                        NaN        0.0262      -0.0090        0.0661
+6                                           pca90  4     260       9        0.7462        0.7000              0.9785   0.3401                                        NaN        0.0011      -0.0241        0.0286
+7  main without 34 valid extreme rows (N changes)  4     226      19        0.7331        0.6792              0.9663   0.2895                                     0.7382           NaN          NaN           NaN
+
+--- 8. ARI tách theo khách thường / khách 'cầu nối' (k = 4) ---
+  pipeline  ARI_non_bridge  ARI_bridge  n_non_bridge  n_bridge
+0       B0          0.0530      0.0000           213        47
+1       B1          0.8115      0.0567           213        47
+2       L2          0.8689      0.1747           213        47
+3       L3          0.9655      0.1654           213        47
+4      REF          1.0000      0.1894           213        47
+
+--- 9. Hồ sơ cụm B1, k = 4 (trung vị theo đơn vị gốc của dữ liệu đã xử lý) ---
+          age  n_orders_12m  avg_order_value  total_spend_12m  recency_days  discount_usage_rate  sessions_per_month  avg_session_minutes  pages_per_session  cart_abandon_rate  size membership_tier_mode device_type_mode preferred_category_mode  app_installed_share
+cluster                                                                                                                                                                                                                                                                 
+0        41.0           2.0            46.45           124.40         134.0                 0.21                2.10                 4.90               4.10               0.42    65               bronze          desktop                 grocery                 0.43
+1        26.5          14.0            30.74           418.75          23.5                 0.91                9.50                 6.85               6.75               0.37    82               bronze           mobile                 fashion                 0.68
+2        29.0           1.0            46.31            52.80          83.5                 0.10               18.05                23.85              21.05               0.90    68               bronze           mobile             electronics                 0.84
+3        37.0          32.0           109.67          3067.61           7.0                 0.08               12.20                 8.50               7.00               0.30    45                 gold           mobile                    home                 0.67
+
+--- 9b. Cụm B1 x phân khúc ẩn (chỉ để đánh giá) ---
+hidden_segment  HighValue  PromoHunter  Infrequent  Browser
+cluster                                                    
+0                       6            5          49        5
+1                       2           68          10        2
+2                       1            2           4       61
+3                      39            3           3        0
+
+--- 9. Hồ sơ cụm L3, k = 4 (trung vị theo đơn vị gốc của dữ liệu đã xử lý) ---
+          age  n_orders_12m  avg_order_value  total_spend_12m  recency_days  discount_usage_rate  sessions_per_month  avg_session_minutes  pages_per_session  cart_abandon_rate  size membership_tier_mode device_type_mode preferred_category_mode  app_installed_share
+cluster                                                                                                                                                                                                                                                                 
+0        38.0          31.5           110.46          3093.19           7.0                 0.08               12.65                 8.50               7.15               0.29    46                 gold           mobile                    home                 0.72
+1        41.0           2.0            48.22           114.31         130.0                 0.22                2.00                 4.70               3.80               0.43    63               bronze          desktop                    home                 0.43
+2        29.0           1.0            44.92            52.80          85.5                 0.10               17.50                22.95              20.65               0.89    74               bronze           mobile             electronics                 0.84
+3        26.0          17.0            28.44           449.79          18.0                 0.92                9.50                 6.80               6.70               0.37    77               bronze           mobile                 fashion                 0.64
+
+--- 9b. Cụm L3 x phân khúc ẩn (chỉ để đánh giá) ---
+hidden_segment  HighValue  PromoHunter  Infrequent  Browser
+cluster                                                    
+0                      42            1           3        0
+1                       4            3          54        2
+2                       1            3           4       66
+3                       1           71           5        0
+
+Đã ghi 7 hình vào /Users/quanai06/Documents/Code/customer-segmentation-midterm/figures/05_clustering; nhãn vào /Users/quanai06/Documents/Code/customer-segmentation-midterm/data/04_clustering/labels.csv; mã băm 12 file kết quả

@@ -1,0 +1,13 @@
+{
+ "data/03_prepared/X_main.csv": "90dc882d89b113584ae71c7d2c2ee262112384eaba212d74f204024821b2936b",
+ "data/03_prepared/customer_ids.csv": "9f162297854f010cd08322378a285b0ec6c2dc1d3fc849fec761f5a502c30b5b",
+ "data/03_prepared/pipeline/feature_metadata.csv": "245db686d74ba8ace6664eafdbe4d305cd1e106a8335305378bdd06ba70ad67b",
+ "data/03_prepared/pipeline/prep_config.json": "a0a048abb17ac2feaff7703d402fb54c46de539d97677a12ef8a9d8cff865bf5",
+ "data/03_prepared/variants/gower_distance.npy": "794cf589bd64b0c9f402468e4e40665283463f3c08aeeba370316f22bdabe7b5",
+ "data/03_prepared/variants/X_full_features.csv": "eaa225808a4fdb2640a6d06d44a9c2041f59c245cdeba5baaddbd6e5bc0626f8",
+ "data/03_prepared/variants/X_cat_unknown_col.csv": "d90d9a0a8343dfa9c82b9dbb8400bd59ca930d53b6a9e5f79c9632a1b9f2acda",
+ "data/03_prepared/variants/X_cat_knn7.csv": "27752578cbeefd17b1cd7cca8d6f34fe44d1feba0f021c66ec2e56efc7329c53",
+ "data/03_prepared/variants/X_cat_mode.csv": "7879b87a199dcbce062dfaf4d5018d5c810eef1a207c1cd98dc60c3b2880b342",
+ "data/03_prepared/variants/X_no_category.csv": "082703dae39844bbd00988a2373806a51cf4c0bc06a51125e760728ce6232908",
+ "data/03_prepared/variants/X_pca90.csv": "a7ff953fe757f359ab09e8402aedf224ea3a04768535efbadc53e6d7799d9ba7"
+}

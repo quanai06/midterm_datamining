@@ -1,0 +1,15 @@
+attribute,group,meaning,dtype,valid_domain,expected_distribution,rationale,noise_added,missing_mechanism,n_missing_final,pct_missing_final,min_final,median_final,max_final
+age,Nhân khẩu,Tuổi khách,int,18-70,"Chuẩn theo phân khúc, cắt biên",Đặc điểm khách; phân biệt yếu (thuộc tính ít thông tin),no,MCAR ~8%,21,8.1,18.0,32.0,150.0
+n_orders_12m,Mua hàng,Số đơn 12 tháng gần nhất,int,>=1 (thực tế 1-60),"Nhị thức âm, lệch phải; mean = 12 x sessions x tỉ lệ chuyển đổi",Tần suất giao dịch,no,,0,0.0,1.0,5.0,178.0
+avg_order_value,Chi tiêu,Giá trị đơn trung bình (USD),float,>0 (thực tế 8-300),"Lognormal, lệch phải",Quy mô mỗi lần mua,yes,,0,0.0,12.36,43.81999999999999,3093.0
+total_spend_12m,Chi tiêu,Tổng chi 12 tháng (USD),float,>0,Lệch phải mạnh; ~ n_orders x AOV,Giá trị khách; cố ý đa cộng tuyến với n_orders,no,,0,0.0,14.76,211.67000000000002,62271.91
+recency_days,Mua hàng,Số ngày từ đơn gần nhất,int,0-365,"Gamma, lệch phải; trung bình ~ 365/(n_orders+1)",Mức còn hoạt động,yes,,0,0.0,-12.0,42.0,365.0
+discount_usage_rate,Khuyến mãi,Tỉ lệ đơn dùng mã giảm giá,float,"[0,1]",Logistic của độ nhạy giá,Nhóm săn khuyến mãi,no,,0,0.0,0.011,0.2055,1.8
+sessions_per_month,Tương tác,Số phiên truy cập mỗi tháng,float,>=0.5,Lognormal theo mức gắn bó,Mức gắn bó với nền tảng,yes,,0,0.0,0.5,10.05,999.0
+avg_session_minutes,Tương tác,Thời lượng phiên trung bình (phút),float,1-90,Lognormal; ~ pages x phút/trang x hệ số thiết bị,Mức tương tác,yes,MAR theo device_type ~12%,31,11.9,1.5,8.5,1440.0
+pages_per_session,Duyệt,Số trang sản phẩm xem mỗi phiên,float,1-60,"Lognormal; tăng theo gắn bó, giảm theo ý định mua",Hành vi duyệt,no,,0,0.0,2.0,7.2,46.7
+cart_abandon_rate,Duyệt,Tỉ lệ giỏ hàng bị bỏ,float,"[0,1]","Logistic, giảm theo ý định mua",Duyệt nhiều nhưng không chốt đơn,no,,0,0.0,0.148,0.425,1.35
+membership_tier,Phân loại thứ tự,Hạng thành viên,ordinal,bronze<silver<gold,Cắt ngưỡng của log(total_spend)+nhiễu,Hạng đạt được nhờ chi tiêu,no,,0,0.0,,,
+device_type,Phân loại định danh,Thiết bị chính,nominal,mobile/desktop/tablet,"Multinomial theo phân khúc, tuổi",Hành vi theo thiết bị,no,,0,0.0,,,
+preferred_category,Phân loại định danh,Ngành hàng ưa thích,nominal,fashion/electronics/home/beauty/grocery,"Multinomial theo phân khúc, tuổi",Sở thích mua,no,MCAR ~5%,13,5.0,,,
+app_installed,Nhị phân,Đã cài ứng dụng,binary,0/1,"Bernoulli, tăng theo mobile và gắn bó",Mức gắn bó kênh,no,,0,0.0,,,

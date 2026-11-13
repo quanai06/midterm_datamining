@@ -1,0 +1,8 @@
+method,flagged,true_injected_caught,precision,recall,recall_error,recall_genuine
+domain_rules,6,6,1.0,0.4,0.8571,0.0
+tukey_1.5,94,13,0.1383,0.8667,0.7143,1.0
+tukey_3,38,12,0.3158,0.8,0.5714,1.0
+robust_z_3.5,33,10,0.303,0.6667,0.8571,0.5
+identity_mismatch,1,1,1.0,0.0667,0.1429,0.0
+LOF_20,10,9,0.9,0.6,0.8571,0.375
+hard_errors(rules|identity),7,7,1.0,0.4667,1.0,0.0

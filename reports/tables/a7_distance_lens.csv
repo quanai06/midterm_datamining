@@ -1,0 +1,4 @@
+,share_pairs_with_hard_rows,knn5_median,knn5_p95,knn5_max,hopkins,hard_rows_share_of_rows
+raw_z,0.31392,0.84312,2.69633,16.06942,0.93965,0.02692
+robust_log,0.1516,1.13617,1.60941,7.09691,0.83471,0.02692
+raw_unscaled,0.02999,,,,,0.02692

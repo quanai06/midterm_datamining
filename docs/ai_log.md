@@ -1,0 +1,43 @@
+# Nhật ký cộng tác AI
+
+## Khai báo công cụ
+- Claude Code (CLI), model: Claude Sonnet 5.5 — thiết kế, sinh dữ liệu, lập trình, phân tích
+- (bổ sung các công cụ/phiên khác nếu có)
+
+## Quyết định, sai sót AI và chỉnh sửa
+| # | Câu | AI đề xuất | Tôi kiểm chứng / chỉnh sửa | Lý do |
+|---|-----|-----------|----------------------------|-------|
+| 1 | a | Thiết kế 4 phân khúc ban đầu (tham số tách rõ) | Chạy thử K-Means: ARI = 0,98 trên dữ liệu sạch, quá dễ tách → thêm 18% khách cầu nối, phân tán lớn hơn, làm mềm biến phân loại → ARI ≈ 0,75 | Tránh hiệu ứng trần ở câu e và tăng độ thực tế |
+| 2 | a | Đề xuất ban đầu có phân khúc "trung thành" | Đổi thành "chủ yếu duyệt" (Browser) theo yêu cầu của sinh viên; 13 → 14 thuộc tính (thêm hành vi duyệt) | Khớp với 4 nhóm hành vi sinh viên nêu |
+| 3 | a | Cài đặt generator nhiều tầng (đặc điểm ẩn E, I, W, S) | Lần chạy đầu: ARI sạch chỉ 0,47 (thiết kế 0,70-0,80) → hiệu chỉnh trên D0 qua nhiều cấu hình (`src/design_validation/calibrate_overlap.py`) | Mô hình nhân quả chồng lấn nhiều hơn bản mô phỏng thử |
+| 4 | a | Hiệu chỉnh vòng 1 (khoảng cách mọi đặc điểm x1,3) cho ARI 0,73 | Kiểm tra cây quyết định 1 thuộc tính: sessions_per_month tự tách được 0,72 > ngưỡng 0,70 đặt trước; trung vị HighValue phi thực tế (46 đơn, 4.141 USD). Không nới ngưỡng; giữ khoảng cách trục E, tăng I/W/S x1,5, conv0 = -2,6 | Tránh "một thuộc tính quyết định phân khúc" và giữ tính thực tế |
+| 5 | a | Kiểm tra "nhiễu không thiên lệch" dùng trung bình tỉ số D1/D0 | Sai phương pháp (tỉ số phồng khi mẫu số nhỏ); sửa thành mean(D1)/mean(D0) - 1, không sửa dữ liệu | Lỗi nằm ở phép kiểm tra, không ở nhiễu |
+| 6 | a | Ngoại lai "đại lý" dùng hệ số nhân lên số đơn sẵn có | 2/8 ngoại lai hợp lệ không vượt hàng rào IQR → đặt cường độ theo hàng rào Tukey của D1 | Ngoại lai phải thật sự là ngoại lai thống kê |
+| 7 | a | Ngoại lai "cá voi" nhân 2,5-3,5 lần số đơn | Đọc nhật ký thấy 309 đơn/năm với 36 phiên/tháng (phi nghiệp vụ); bộ kiểm tra tự động KHÔNG bắt được → sửa cách tạo, thêm kiểm tra số đơn <= 1 đơn/phiên | Phát hiện bằng mắt, rồi tự động hóa |
+| 8 | a | Thiết kế duyệt: discount phụ thuộc hạng gold | Bỏ phụ thuộc này vì tạo vòng lặp (hạng suy từ total_spend, total_spend suy từ discount); tương quan discount-tier vẫn xuất hiện gián tiếp qua W và S | Tránh phụ thuộc vòng; ghi nhận là sai khác so với thiết kế đã duyệt |
+| 9 | a | Hai lần sinh viên dán prompt dạng supervised (dự đoán `purchased_Y`, nhãn hai lớp) | AI nêu rõ xung đột với đề phân cụm, không tạo nhãn `purchased_Y`; sinh viên xác nhận quay lại unsupervised. Sản phẩm không có biến mục tiêu | Giữ nhất quán giữa hội thoại và sản phẩm (tiêu chí v) |
+| 10 | b | Dùng skewness/Bowley để chọn cột cần log | Lần chạy đầu cho thấy quy tắc chọn cả discount_usage_rate và cart_abandon_rate (biến tỉ lệ [0,1], lệch chỉ vì hai nhóm khách) → đổi sang skew sau khi loại ô vi phạm miền > 1 và không phải biến bị chặn. Đổi quy tắc sau khi xem kết quả, ghi nhận để minh bạch; số Hopkins/khoảng cách trong báo cáo là của quy tắc cuối | Quy tắc đầu chọn sai biến |
+| 11 | b | Kiểm định chi-square cho cơ chế thiếu | preferred_category ~ device_type: p tiệm cận 0,0006 (đạt Bonferroni) nhưng số kỳ vọng nhỏ nhất 2,05 < 5 → thêm kiểm định hoán vị: p = 0,0015, Bonferroni 0,0585, kết luận đổi từ 'có ý nghĩa' sang 'chưa đủ bằng chứng' | Xấp xỉ chi-square không đáng tin khi số kỳ vọng nhỏ |
+| 12 | b | Bảng giá trị thật của ô bị thiếu theo thiết bị dùng trung bình | Dòng avg_session_minutes = 1440 làm trung bình mobile 23,4 (sai lệch) → dùng trung vị | Trung bình bị ngoại lai làm méo |
+| 13 | b | Hình heatmap có thanh màu chung (`ax=axes`), legend đặt mặc định | Xem hình thấy thanh màu đè lên panel phải, legend đè cột, nhãn log chồng nhau (2x10^1), PCA hai panel bị lật dấu trục → dành trục riêng cho thanh màu, đổi vị trí legend, định dạng nhãn log, căn dấu PCA theo D0 | Lỗi chỉ thấy khi mở hình, bộ kiểm tra tự động không bắt được |
+| 14 | b | Bảng màu repo figures4papers | validate_palette.js báo trượt (xanh #0F4D92 quá tối, #42949E quá xám) → dùng #3775BA và #2E9C8A; thứ tự màu cố định theo bộ đạt kiểm tra (`docs/figure_style.md`) | Màu phải đạt kiểm tra CVD/tương phản |
+| 15 | b | Phần A 'mù' | Nhận ra mù về thủ tục chứ không về tri thức (người phân tích cũng thiết kế bộ sinh); ghi vào hạn chế của `docs/cau_b_findings.md` | Trung thực về phương pháp |
+| 16 | c | Gán AOV = total/n cho C0062 (sinh viên đặt điều kiện: chỉ khi Data Dictionary xác nhận đây là đẳng thức chính xác) | Dictionary ghi 'total_spend ~ n_orders x AOV' (xấp xỉ), AOV không nêu phạm vi thời gian, câu b đo sd bền độ lệch 0,164 → điều kiện không thỏa → vô hiệu hóa ô AOV và điền bằng mô hình; total/n chỉ để kiểm tra (điền 40,75 vs 40,04) | Không biến xấp xỉ thành đẳng thức |
+| 17 | c | Pilot gọi MAE của age là 'thang log' | Sai: age không log, chỉ chuẩn hóa theo IQR; báo cáo sai số bằng năm (KNN10 6,89, SE 0,122, so với trung vị 8,82) | Nhãn đơn vị sai |
+| 18 | c | Kiểm tra nghiệm thu 'cực trị hợp lệ không bị sửa' ở mức dòng | Trượt vì dòng cực trị có ô khác bị thiếu và cần điền; đổi sang mức ô (0/56 ô cực trị bị chạm). Lỗi ở phép kiểm tra, không ở dữ liệu | Sai phạm vi kiểm tra |
+| 19 | c | Ngưỡng 'giá trị điền lặp tối đa 3 lần' | Tùy tiện; age lặp 4 lần làm trượt → thay bằng bootstrap p95 từ phân phối quan sát (4 <= 5). Đổi SAU khi thấy trượt (dữ liệu không đổi); ghi để minh bạch | Ngưỡng không có căn cứ |
+| 20 | c | Hình fig04(c) so khoảng cách 5-NN tuyệt đối | Thang z-score hai bên khác nhau (sd cột bị ô hỏng làm phồng) nên 'After' trông thưa hơn → chuẩn hóa theo trung vị; chạy lại, mã băm 4 file dữ liệu đóng băng không đổi | Tránh hiểu nhầm |
+| 21 | c | Ước lượng che ô cho avg_session_minutes (MAE 3,04 phút) | Sau đóng băng, đo thực tế 3,79 phút so với D2 (+25%): mask ngẫu nhiên (MCAR) trong khi thiếu có dấu hiệu theo thiết bị, n = 31. Ghi vào hạn chế; **không đổi pipeline theo D0** | Chống rò rỉ từ dữ liệu sạch |
+| 22 | c | Phương pháp iterative cho recency | Ô C0242: điền 210 ngày, D0 là 69, tệ hơn mốc trung vị toàn cục (26). Báo cáo là một lần trượt, không đổi phương pháp sau khi biết | Trung thực về kết quả xấu |
+| 23 | c | Kỳ vọng xử lý cải thiện mọi chỉ số | Đối chiếu: skew của avg_order_value tăng 9,19 → 10,92, KS của age 0,011 → 0,023, KS của sessions giữ 0,050; nêu cùng với các chỉ số cải thiện | Không chọn lọc kết quả |
+| 24 | d | Sinh viên nói đã thống nhất quy trình trong khi AI chưa trình bày đề xuất ở lượt đó | AI không giả định đã được duyệt: triển khai theo kết quả pilot, nêu rõ trong `docs/cau_d_decisions.md` rằng đây là lựa chọn của AI để sinh viên bác bỏ ở review cuối; mọi phương án thay thế lưu thành biến thể | Minh bạch về ai quyết định gì |
+| 25 | d | Ánh xạ cột sang thuộc tính gốc bằng so khớp chuỗi con | Lỗi: 'age' in 'pages_per_session' làm tỉ trọng khoảng cách của age = 0,2005 (gấp 3) và siêu dữ liệu sai nguồn cho pages/discount; ma trận X không sai. Sửa bằng so khớp chính xác, thêm 2 kiểm tra nghiệm thu (tỉ trọng bằng nhau mỗi biến; ánh xạ đúng 13 thuộc tính); 13/13 đạt | Nghiệm thu 11/11 lần đầu vẫn bỏ sót lỗi, chỉ lộ khi đọc bảng số liệu |
+| 26 | d | Bỏ total_spend_12m | R² = 0,987 theo log(n_orders), log(AOV); giữ biến thể `X_full_features` để so sánh (5-NN trùng 0,94 với X_main) | Dư thừa gần tất định |
+| 27 | d | K-Prototypes | Không có thư viện kmodes; không cài thêm, không giả vờ đã chạy; thay bằng ma trận Gower | Chỉ báo cáo điều đã làm |
+| 28 | e | Phân cấp trên Gower với liên kết `average` (chọn trước) | Kết quả rất yếu (ARI 0,047 ở B1; cụm 238/18/3/1). Không chọn lại theo nhãn ẩn: thêm `complete` và chọn giữa hai loại CHỈ bằng Silhouette Gower, in cả hai. Chỉ số nội tại vẫn chọn `average` cho B1, L2 (ARI 0,047 / 0,170) và `complete` cho L3 (0,605). Thay đổi sau khi thấy kết quả, ghi để minh bạch | Tránh điều chỉnh theo nhãn; thừa nhận chỉ số nội tại cũng lệch trên dữ liệu thô |
+| 29 | e | Silhouette thang riêng để so các nhánh | B0 có Silhouette 0,948 (k = 2, cụm 257/3) trong khi ARI 0,005 → không dùng thang riêng để so nhánh; dùng thang chung `X_main`, chỉ số ngoài và độ ổn định | Chỉ số nội tại khác không gian không so sánh được |
+| 30 | e | Kỳ vọng 'câu d cải thiện hơn câu c' | ARI ở k = 4: +0,044 [-0,024; 0,115], không đủ bằng chứng. Lợi ích của câu d thể hiện ở chọn k (7 → 4) và ổn định (chạy lặp 0,823 → 0,958). Ghi đúng như đo | Không thổi phồng |
+| 31 | e | Bảng Gower lặp dòng; nhãn 'k=' đè lên số ở hình | Bảng lặp vì k chọn của L3 trùng 4 → dùng tập k duy nhất; chuyển nhãn k xuống nhãn trục | Lỗi trình bày/in bảng, không ảnh hưởng nhãn phân cụm (md5 `labels.csv` không đổi) |
+
+## Lịch sử hội thoại chính
+(Export từ transcript của phiên Claude Code vào `docs/transcripts/` khi hoàn thành)

@@ -1,0 +1,7 @@
+,top5_rows_share_of_SS,top1_feature_share,max_abs_value,cells_beyond_4sd
+raw + StandardScaler,0.2194,0.1133,12.6635,17.0
+raw + MinMaxScaler,0.077,0.3073,1.0,17.0
+raw + RobustScaler,0.8071,0.5232,85.1613,17.0
+log1p + StandardScaler,0.0663,0.1188,5.815,2.0
+log1p + MinMaxScaler,0.0463,0.247,1.0,2.0
+log1p + RobustScaler,0.0885,0.1693,5.4675,2.0

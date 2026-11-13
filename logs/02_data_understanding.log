@@ -1,0 +1,287 @@
+================================================================================
+PHẦN A - PHÂN TÍCH MÙ: chỉ đọc data_raw_corrupted.csv và data_dictionary.csv
+================================================================================
+
+--- A1. Kích thước ---
+260 dòng x 15 cột (gồm customer_id)
+
+--- A1. Lược đồ: kiểu đọc được vs kiểu khai báo ---
+                    dtype_pandas  n_unique  n_missing                group dtype_khai_bao                             valid_domain
+customer_id               object       260          0                  NaN            NaN                                      NaN
+age                      float64        43         21            Nhân khẩu            int                                    18-70
+n_orders_12m               int64        62          0             Mua hàng            int                       >=1 (thực tế 1-60)
+avg_order_value          float64       258          0             Chi tiêu          float                       >0 (thực tế 8-300)
+total_spend_12m          float64       260          0             Chi tiêu          float                                       >0
+recency_days               int64       125          0             Mua hàng            int                                    0-365
+discount_usage_rate      float64       210          0           Khuyến mãi          float                                    [0,1]
+sessions_per_month       float64       159          0            Tương tác          float                                    >=0.5
+avg_session_minutes      float64       144         31            Tương tác          float                                     1-90
+pages_per_session        float64       142          0                Duyệt          float                                     1-60
+cart_abandon_rate        float64       207          0                Duyệt          float                                    [0,1]
+membership_tier           object         3          0     Phân loại thứ tự        ordinal                       bronze<silver<gold
+device_type               object         3          0  Phân loại định danh        nominal                    mobile/desktop/tablet
+preferred_category        object         5         13  Phân loại định danh        nominal  fashion/electronics/home/beauty/grocery
+app_installed              int64         2          0             Nhị phân         binary                                      0/1
+customer_id duy nhất: True | dòng trùng (bỏ id): 0
+
+--- A2. Thống kê mô tả (thô, chưa xử lý gì) ---
+                     count      mean       std     min     25%      50%      75%       max  missing    skew  kurtosis  bowley_skew  mean/median     CV  robust_sd(IQR/1.349)  std/robust_sd
+age                  239.0    33.607    12.804  18.000  25.000   32.000   40.000    150.00       21   3.335    27.423        0.067        1.050  0.381                11.119          1.152
+n_orders_12m         260.0    15.538    25.761   1.000   1.000    5.000   19.000    178.00        0   3.330    13.533        0.556        3.108  1.658                13.343          1.931
+avg_order_value      260.0    86.899   284.438  12.360  30.105   43.820   66.230   3093.00        0   9.187    87.101        0.241        1.983  3.273                26.779         10.622
+total_spend_12m      260.0  1455.014  5037.612  14.760  59.920  211.670  788.658  62271.91        0   8.518    89.809        0.584        6.874  3.462               540.206          9.325
+recency_days         260.0    81.304   101.266 -12.000  12.750   42.000  102.000    365.00        0   1.693     1.887        0.345        1.936  1.246                66.160          1.531
+discount_usage_rate  260.0     0.389     0.360   0.011   0.097    0.206    0.841      1.80        0   0.831    -0.540        0.708        1.892  0.927                 0.551          0.654
+sessions_per_month   260.0    14.901    61.811   0.500   4.500   10.050   15.375    999.00        0  15.702   250.866       -0.021        1.483  4.148                 8.062          7.667
+avg_session_minutes  229.0    18.934    94.939   1.500   5.700    8.500   17.200   1440.00       31  14.838   222.990        0.513        2.227  5.014                 8.525         11.137
+pages_per_session    260.0    10.460     8.153   2.000   5.200    7.200   13.050     46.70        0   1.637     2.498        0.490        1.453  0.779                 5.819          1.401
+cart_abandon_rate    260.0     0.521     0.246   0.148   0.338    0.425    0.738      1.35        0   0.736    -0.693        0.567        1.227  0.472                 0.297          0.829
+
+--- A2. Biến phân loại ---
+                    n_levels  n_missing     mode  mode_share  entropy_bits                                                                                  counts
+attribute                                                                                                                                                         
+membership_tier            3          0   bronze       0.677         1.231                                               {"bronze": 176, "silver": 42, "gold": 42}
+device_type                3          0   mobile       0.542         1.420                                            {"mobile": 141, "desktop": 78, "tablet": 41}
+preferred_category         5         13  fashion       0.258         2.460  {"fashion": 67, "electronics": 52, "beauty": 49, "home": 45, "grocery": 34, "nan": 13}
+app_installed              2          0        1       0.658         0.927                                                                     {"1": 171, "0": 89}
+
+--- A2. Quy tắc chọn cột lệch phải cần log: skew sau khi loại ô vi phạm luật miền > 1 và không phải biến tỉ lệ bị chặn [0,1] ---
+                       skew  skew_excl_violations  bowley_skew  bounded_[0,1]  chon_log
+age                   3.335                 0.432        0.067          False     False
+n_orders_12m          3.330                 3.330        0.556          False      True
+avg_order_value       9.187                 9.187        0.241          False      True
+total_spend_12m       8.518                 8.518        0.584          False      True
+recency_days          1.693                 1.690        0.345          False      True
+discount_usage_rate   0.831                 0.700        0.708           True     False
+sessions_per_month   15.702                 1.156       -0.021          False      True
+avg_session_minutes  14.838                 2.061        0.513          False      True
+pages_per_session     1.637                 1.637        0.490          False      True
+cart_abandon_rate     0.736                 0.667        0.567           True     False
+
+--- A3. Giá trị vi phạm luật miền ---
+  customer_id               column    value       rule
+0       C0226                  age   150.00  (18, 100)
+1       C0242         recency_days   -12.00   (0, 365)
+2       C0004  discount_usage_rate     1.80     (0, 1)
+3       C0155   sessions_per_month   999.00   (0, 100)
+4       C0068  avg_session_minutes  1440.00   (0, 240)
+5       C0069    cart_abandon_rate     1.35     (0, 1)
+Giá trị 'mã đặc biệt' (999/0/-1) tìm thấy: {'sessions_per_month': 1} | cột có giá trị âm: {'recency_days': 1}
+
+--- A4. Giá trị thiếu theo cột ---
+                     n_missing    pct
+age                         21   8.08
+avg_session_minutes         31  11.92
+preferred_category          13   5.00
+Số ô thiếu mỗi dòng: {0: 199, 1: 57, 2: 4} | dòng đủ dữ liệu: 199/260
+
+--- A4. Thiếu đồng thời (quan sát vs kỳ vọng nếu độc lập) ---
+                                          observed  expected_if_independent
+age & avg_session_minutes                      4.0                     2.50
+age & preferred_category                       0.0                     1.05
+avg_session_minutes & preferred_category       0.0                     1.55
+
+--- A4. Kiểm định cơ chế thiếu (39 phép thử; p = hoán vị khi số kỳ vọng < 5, ngược lại p tiệm cận; Bonferroni theo p này) ---
+            missing_col               other          test  p_asymptotic  p_perm       p  p_bonferroni  effect  min_expected
+37   preferred_category         device_type          Chi2        0.0006  0.0015  0.0015        0.0585  0.2398        2.0500
+23  avg_session_minutes         device_type          Chi2        0.0034  0.0037  0.0037        0.1443  0.2090        4.8885
+38   preferred_category       app_installed          Chi2        0.0674  0.0400  0.0400        1.0000  0.1134        4.4500
+15  avg_session_minutes     avg_order_value  Mann-Whitney        0.0765     NaN  0.0765        1.0000  0.1962           NaN
+22  avg_session_minutes     membership_tier          Chi2        0.1068     NaN  0.1068        1.0000  0.1312        5.0077
+29   preferred_category     total_spend_12m  Mann-Whitney        0.1956     NaN  0.1956        1.0000 -0.2133           NaN
+12                  age       app_installed          Chi2        0.1972     NaN  0.1972        1.0000  0.0800        7.1885
+19  avg_session_minutes  sessions_per_month  Mann-Whitney        0.2171     NaN  0.2171        1.0000 -0.1368           NaN
+36   preferred_category     membership_tier          Chi2        0.2473  0.2447  0.2447        1.0000  0.1037        2.1000
+27   preferred_category        n_orders_12m  Mann-Whitney        0.2619     NaN  0.2619        1.0000 -0.1822           NaN
+
+--- A4. Tỉ lệ thiếu avg_session_minutes theo device_type ---
+             sum  count   mean
+device_type                   
+desktop       17     78  0.218
+mobile         9    141  0.064
+tablet         5     41  0.122
+
+--- A5. Các cặp thuộc tính |Spearman| lớn nhất ---
+                      a                    b  spearman  pearson_raw  abs_spearman
+10         n_orders_12m      total_spend_12m     0.920        0.767         0.920
+42  avg_session_minutes    pages_per_session     0.848        0.049         0.848
+11         n_orders_12m         recency_days    -0.746       -0.371         0.746
+40   sessions_per_month    pages_per_session     0.739        0.053         0.739
+16         n_orders_12m    cart_abandon_rate    -0.725       -0.438         0.725
+24      total_spend_12m         recency_days    -0.711       -0.200         0.711
+29      total_spend_12m    cart_abandon_rate    -0.683       -0.230         0.683
+39   sessions_per_month  avg_session_minutes     0.637       -0.001         0.637
+19      avg_order_value  discount_usage_rate    -0.586       -0.070         0.586
+43  avg_session_minutes    cart_abandon_rate     0.520        0.032         0.520
+
+--- A5. Các cặp mà Pearson thô và Spearman lệch nhau nhiều (|chênh| > 0,25) ---
+                      a                    b  spearman  pearson_raw   diff
+42  avg_session_minutes    pages_per_session     0.848        0.049 -0.800
+11         n_orders_12m         recency_days    -0.746       -0.371  0.375
+40   sessions_per_month    pages_per_session     0.739        0.053 -0.686
+16         n_orders_12m    cart_abandon_rate    -0.725       -0.438  0.287
+24      total_spend_12m         recency_days    -0.711       -0.200  0.510
+29      total_spend_12m    cart_abandon_rate    -0.683       -0.230  0.453
+39   sessions_per_month  avg_session_minutes     0.637       -0.001 -0.639
+19      avg_order_value  discount_usage_rate    -0.586       -0.070  0.516
+43  avg_session_minutes    cart_abandon_rate     0.520        0.032 -0.487
+17      avg_order_value      total_spend_12m     0.388        0.131 -0.258
+36  discount_usage_rate  avg_session_minutes    -0.373        0.063  0.436
+35  discount_usage_rate   sessions_per_month    -0.301        0.069  0.370
+1                   age      avg_order_value     0.294        0.040 -0.254
+14         n_orders_12m  avg_session_minutes    -0.290       -0.005  0.285
+25      total_spend_12m  discount_usage_rate     0.094       -0.160 -0.254
+
+--- A5. VIF trên hạng (Spearman), 212 dòng đủ dữ liệu ---
+total_spend_12m        23.18
+n_orders_12m           23.11
+pages_per_session       5.60
+avg_order_value         4.33
+avg_session_minutes     3.75
+cart_abandon_rate       3.13
+sessions_per_month      3.12
+discount_usage_rate     2.42
+recency_days            2.36
+age                     1.35
+Trị riêng ma trận tương quan Spearman: [3.82, 2.5, 1.74, 0.63, 0.38, 0.33, 0.27, 0.2, 0.12, 0.02] | số PC để giữ 80%/90% phương sai: 3/5
+
+--- A5. Cramér V giữa các biến phân loại ---
+                    membership_tier  device_type  preferred_category  app_installed
+membership_tier               1.000        0.075               0.191          0.097
+device_type                   0.075        1.000               0.221          0.238
+preferred_category            0.191        0.221               1.000          0.190
+app_installed                 0.097        0.238               0.190          1.000
+
+--- A5. Epsilon^2 Kruskal-Wallis: mức biến số khác nhau giữa các nhóm của biến phân loại ---
+                      age  n_orders_12m  avg_order_value  total_spend_12m  recency_days  discount_usage_rate  sessions_per_month  avg_session_minutes  pages_per_session  cart_abandon_rate
+membership_tier     0.008         0.524            0.235            0.623         0.354                0.099               0.069                0.013             -0.004              0.287
+device_type         0.108        -0.006            0.032           -0.002         0.002                0.011               0.040                0.009              0.081              0.001
+preferred_category  0.135         0.001            0.401            0.042         0.008                0.082               0.081                0.098              0.162              0.011
+app_installed      -0.002        -0.004           -0.001           -0.003         0.011                0.001               0.065                0.038              0.058             -0.003
+
+--- A6. Số dòng bị mỗi phương pháp gắn cờ ---
+                   n_rows
+domain_rules            6
+tukey_1.5              94
+tukey_3                38
+robust_z_3.5           33
+identity_mismatch       1
+LOF_20                 10
+
+--- A6. Giao giữa các phương pháp (số dòng cùng bị gắn cờ) ---
+                   domain_rules  tukey_1.5  tukey_3  robust_z_3.5  identity_mismatch  LOF_20
+domain_rules                  6          4        3             5                  0       5
+tukey_1.5                     4         94       38            12                  1       8
+tukey_3                       3         38       38             9                  1       7
+robust_z_3.5                  5         12        9            33                  1       7
+identity_mismatch             0          1        1             1                  1       1
+LOF_20                        5          8        7             7                  1      10
+
+--- A6. Số ô vượt ngưỡng theo thuộc tính ---
+                     domain  tukey_1.5  tukey_3
+age                       1          1        1
+n_orders_12m              0         20        9
+avg_order_value           0         21       15
+total_spend_12m           0         39       27
+recency_days              1         29        0
+discount_usage_rate       1          0        0
+sessions_per_month        1          5        2
+avg_session_minutes       1          9        4
+pages_per_session         0         20        2
+cart_abandon_rate         1          1        0
+Độ lệch đẳng thức ln(total/(n x AOV)): trung vị=0.001, sd bền=0.164 (ngưỡng 5 sd bền = ±0.821); sd thường=0.311
+
+--- A7. Tỉ trọng phương sai thô của từng thuộc tính (quyết định đóng góp vào khoảng cách Euclid khi KHÔNG chuẩn hóa) ---
+                     pct_of_total_variance
+total_spend_12m                     99.593
+avg_order_value                      0.318
+recency_days                         0.040
+avg_session_minutes                  0.031
+sessions_per_month                   0.015
+n_orders_12m                         0.003
+age                                  0.001
+pages_per_session                    0.000
+discount_usage_rate                  0.000
+cart_abandon_rate                    0.000
+
+--- A7. Khoảng cách: tác động của 7 dòng lỗi cứng (vi phạm luật miền hoặc đẳng thức) theo cách biểu diễn ---
+             share_pairs_with_hard_rows knn5_median  knn5_p95   knn5_max                                     hopkins  hard_rows_share_of_rows
+raw_z                          0.313915    0.843116  2.696334  16.069423  (0.9396542393550632, 0.019058129597157004)                   0.0269
+robust_log                     0.151604    1.136169  1.609415   7.096907   (0.8347145820769603, 0.01397641914369604)                   0.0269
+raw_unscaled                   0.029994         NaN       NaN        NaN                                         NaN                   0.0269
+
+================================================================================
+PHẦN B - ĐỐI CHIẾU VỚI DỮ LIỆU NỀN VÀ NHẬT KÝ CHÈN LỖI (đã chốt Phần A trước khi đọc)
+================================================================================
+
+--- B1. Tác động của NHIỄU (D0 -> D1) ---
+                     mean_change_pct  std_change_pct  noise_sd  snr_var_ratio  corr_D0_D1  ks_stat  wasserstein
+column                                                                                                         
+avg_order_value              -0.6351          2.5538    8.1047        21.9276      0.9781   0.0423       1.9388
+recency_days                  0.2927         -0.2930    3.9039       673.9375      0.9993   0.0346       1.1538
+avg_session_minutes           0.9161          2.5711    2.3127        20.4684      0.9765   0.0346       0.5927
+sessions_per_month            0.4053          1.6234    1.4038        28.0671      0.9826   0.0500       0.2781
+
+--- B1. Tác động của NGOẠI LAI (D1 -> D2) ---
+                     mean_ratio  std_ratio  skew_D1  skew_D2     max_D1    max_D2  n_cells_changed
+age                       1.012      1.218    0.414    3.220     62.000    150.00              1.0
+n_orders_12m              1.099      1.197    3.003    3.330    154.000    178.00              6.0
+avg_order_value           1.583      7.308    1.972    9.187    204.080   3093.00              8.0
+total_spend_12m           1.284      1.771    4.976    8.518  25637.000  62271.91              7.0
+recency_days              0.995      1.002    1.696    1.693    365.000    365.00              3.0
+discount_usage_rate       1.008      1.026    0.689    0.831      0.984      1.80              1.0
+sessions_per_month        1.384      8.179    0.714   15.702     34.700    999.00              7.0
+avg_session_minutes       1.453      8.314    2.256   15.747     77.100   1440.00              2.0
+pages_per_session         1.009      1.036    1.490    1.637     43.500     46.70              1.0
+cart_abandon_rate         1.007      1.022    0.673    0.736      0.969      1.35              1.0
+
+--- B1. Tác động của GIÁ TRỊ THIẾU (D2 -> D3) lên thống kê quan sát được ---
+                     mean_full_D2  mean_observed_D3  mean_clean_D0  median_full_D2  median_observed_D3  median_clean_D0  std_full_D2  std_observed_D3
+column                                                                                                                                               
+age                        33.635            33.607         33.238            32.0                32.0             32.0       12.608           12.804
+avg_session_minutes        18.165            18.934         12.385             8.5                 8.5              8.4       89.225           94.939
+
+--- B1. avg_session_minutes: TRUNG VỊ giá trị thật (D2) của ô bị thiếu so với ô còn lại, theo thiết bị (dùng trung vị vì dòng 1440 phút làm méo trung bình) ---
+         median_all  median_of_missing_cells  median_of_observed_cells  n_missing
+device                                                                           
+desktop         7.1                      6.8                      7.10         17
+mobile          8.7                      7.6                      8.75          9
+tablet         10.1                      8.7                     10.25          5
+
+B1. Thay đổi tương quan D3 so với D0: Pearson max|Δ|=0.857, mean|Δ|=0.178 | Spearman max|Δ|=0.062, mean|Δ|=0.020
+
+--- B1. 8 cặp có Pearson thay đổi nhiều nhất (D0 -> D3) ---
+                      a                    b  pearson_D0  pearson_D3  spearman_D0  spearman_D3  abs_dPearson
+42  avg_session_minutes    pages_per_session       0.906       0.049        0.877        0.848         0.857
+43  avg_session_minutes    cart_abandon_rate       0.724       0.032        0.516        0.520         0.692
+40   sessions_per_month    pages_per_session       0.709       0.053        0.794        0.739         0.656
+39   sessions_per_month  avg_session_minutes       0.619      -0.001        0.680        0.637         0.620
+17      avg_order_value      total_spend_12m       0.666       0.131        0.397        0.388         0.536
+41   sessions_per_month    cart_abandon_rate       0.464       0.014        0.244        0.212         0.451
+19      avg_order_value  discount_usage_rate      -0.513      -0.070       -0.620       -0.586         0.443
+36  discount_usage_rate  avg_session_minutes      -0.350       0.063       -0.390       -0.373         0.413
+
+--- B2. Cấu trúc khoảng cách/mật độ qua từng giai đoạn (so với D0; silhouette dùng nhãn ẩn chỉ để chẩn đoán) ---
+          stage    lens  neighbour_preserved  dist_spearman  hopkins  silhouette_true_labels
+0      D0 clean   raw_z                1.000          1.000    0.833                   0.298
+1      D0 clean  robust                1.000          1.000    0.724                   0.327
+2     D1 +noise   raw_z                0.788          0.992    0.837                   0.294
+3     D1 +noise  robust                0.668          0.979    0.718                   0.317
+4  D2 +outliers   raw_z                0.553          0.776    0.939                   0.281
+5  D2 +outliers  robust                0.622          0.869    0.835                   0.297
+6   D3 +missing   raw_z                0.527          0.772    0.940                   0.281
+7   D3 +missing  robust                0.572          0.861    0.835                   0.288
+
+--- B3. Kiểm chứng phát hiện mù: so với 15 khách thật sự bị chèn ngoại lai (8 hợp lệ + 7 lỗi) ---
+                             flagged  true_injected_caught  precision  recall  recall_error  recall_genuine
+method                                                                                                     
+domain_rules                       6                     6      1.000   0.400         0.857           0.000
+tukey_1.5                         94                    13      0.138   0.867         0.714           1.000
+tukey_3                           38                    12      0.316   0.800         0.571           1.000
+robust_z_3.5                      33                    10      0.303   0.667         0.857           0.500
+identity_mismatch                  1                     1      1.000   0.067         0.143           0.000
+LOF_20                            10                     9      0.900   0.600         0.857           0.375
+hard_errors(rules|identity)        7                     7      1.000   0.467         1.000           0.000
+Quan sát độ lệch đẳng thức: sd bền quan sát = 0.164; sd kỳ vọng từ nhiễu nhân avg_order_value 0.12 và biến thiên total 0.10 = 0.156
+
+Đã ghi 16 hình vào /Users/quanai06/Documents/Code/customer-segmentation-midterm/figures/02_understanding

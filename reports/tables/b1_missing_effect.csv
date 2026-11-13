@@ -1,0 +1,3 @@
+column,mean_full_D2,mean_observed_D3,mean_clean_D0,median_full_D2,median_observed_D3,median_clean_D0,std_full_D2,std_observed_D3
+age,33.6346,33.6067,33.2385,32.0,32.0,32.0,12.6076,12.8044
+avg_session_minutes,18.1654,18.9336,12.3854,8.5,8.5,8.4,89.2246,94.9394

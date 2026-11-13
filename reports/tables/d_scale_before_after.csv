@@ -1,0 +1,11 @@
+feature,dropped,transform,before_mean,before_std,before_min,before_max,before_skew,after_mean,after_std,after_min,after_max,after_skew
+n_orders_12m,False,log1p + z-score,15.5385,25.7606,1.0,178.0,3.3296,0.0,1.0,-1.0744,2.5997,0.5171
+avg_order_value,False,log1p + z-score,75.1599,214.2057,12.36,2782.53,10.9228,-0.0,1.0,-1.8508,5.815,1.6731
+recency_days,False,log1p + z-score,82.1577,101.4119,0.0,365.0,1.6709,0.0,1.0,-2.3739,1.5474,-0.5536
+sessions_per_month,False,log1p + z-score,11.0919,8.1824,0.5,53.8,1.1607,0.0,1.0,-2.2551,2.2115,-0.6268
+avg_session_minutes,False,log1p + z-score,12.5381,10.723,1.5,68.2,2.0715,-0.0,1.0,-2.1899,2.8187,0.467
+pages_per_session,False,log1p + z-score,10.4596,8.1525,2.0,46.7,1.6373,-0.0,1.0,-1.8621,2.6626,0.5198
+age,False,z-score,33.1577,10.0475,18.0,62.0,0.4322,-0.0,1.0,-1.5115,2.8761,0.4322
+discount_usage_rate,False,z-score,0.3854,0.3509,0.011,0.984,0.6881,0.0,1.0,-1.0689,1.7092,0.6881
+cart_abandon_rate,False,z-score,0.5175,0.2408,0.148,0.969,0.6735,0.0,1.0,-1.5376,1.879,0.6735
+total_spend_12m,True,log1p + z-score,1455.0141,5037.6121,14.76,62271.91,8.5178,0.0,1.0,-1.6489,3.1986,0.6193

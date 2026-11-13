@@ -1,0 +1,5 @@
+cluster,age,n_orders_12m,avg_order_value,total_spend_12m,recency_days,discount_usage_rate,sessions_per_month,avg_session_minutes,pages_per_session,cart_abandon_rate,size,membership_tier_mode,device_type_mode,preferred_category_mode,app_installed_share
+0,41.0,2.0,46.45,124.4,134.0,0.214,2.1,4.9,4.1,0.424,65,bronze,desktop,grocery,0.431
+1,26.5,14.0,30.735,418.75,23.5,0.915,9.5,6.85,6.75,0.37,82,bronze,mobile,fashion,0.683
+2,29.0,1.0,46.305,52.795,83.5,0.097,18.05,23.85,21.05,0.899,68,bronze,mobile,electronics,0.838
+3,37.0,32.0,109.67,3067.61,7.0,0.084,12.2,8.5,7.0,0.296,45,gold,mobile,home,0.667

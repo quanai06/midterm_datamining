@@ -1,0 +1,148 @@
+================================================================================
+CÂU D - CHUẨN BỊ DỮ LIỆU. Đầu vào đã đóng băng (câu c), mã băm khớp. Shape: (260, 15)
+================================================================================
+Cột log1p: ['n_orders_12m', 'avg_order_value', 'recency_days', 'sessions_per_month', 'avg_session_minutes', 'pages_per_session'] | cột tuyến tính: ['age', 'discount_usage_rate', 'cart_abandon_rate'] | bỏ vì dư thừa: ['total_spend_12m']
+
+--- 1. Dư thừa trên thang log: R2/VIF khi có và không có total_spend_12m ---
+                     R2_with_total  VIF_with_total  R2_without_total  VIF_without_total
+age                          0.347           1.531             0.334              1.501
+n_orders_12m                 0.985          67.145             0.862              7.255
+avg_order_value              0.933          14.831             0.574              2.349
+total_spend_12m              0.988          82.480               NaN                NaN
+recency_days                 0.650           2.859             0.650              2.859
+discount_usage_rate          0.587           2.421             0.586              2.417
+sessions_per_month           0.759           4.152             0.759              4.150
+avg_session_minutes          0.832           5.951             0.831              5.915
+pages_per_session            0.902          10.190             0.902             10.184
+cart_abandon_rate            0.831           5.929             0.827              5.780
+tier                         0.744           3.899             0.743              3.884
+app                          0.110           1.123             0.107              1.120
+
+--- 2. So sánh scaler (10 cột số): mức chi phối của vài dòng/cột ---
+                        top5_rows_share_of_SS  top1_feature_share  max_abs_value  cells_beyond_4sd
+raw + StandardScaler                    0.219               0.113         12.663              17.0
+raw + MinMaxScaler                      0.077               0.307          1.000              17.0
+raw + RobustScaler                      0.807               0.523         85.161              17.0
+log1p + StandardScaler                  0.066               0.119          5.815               2.0
+log1p + MinMaxScaler                    0.046               0.247          1.000               2.0
+log1p + RobustScaler                    0.088               0.169          5.468               2.0
+w device = 1.3007, w category = 1.1247 (tính trên 247 nhãn đã biết)
+
+--- 3. Thang đo và hình dạng phân phối trước/sau (cột số) ---
+               feature  dropped        transform  before_mean  before_std  before_min  before_max  before_skew  after_mean  after_std  after_min  after_max  after_skew
+0         n_orders_12m    False  log1p + z-score       15.538      25.761       1.000     178.000        3.330         0.0        1.0     -1.074      2.600       0.517
+1      avg_order_value    False  log1p + z-score       75.160     214.206      12.360    2782.530       10.923        -0.0        1.0     -1.851      5.815       1.673
+2         recency_days    False  log1p + z-score       82.158     101.412       0.000     365.000        1.671         0.0        1.0     -2.374      1.547      -0.554
+3   sessions_per_month    False  log1p + z-score       11.092       8.182       0.500      53.800        1.161         0.0        1.0     -2.255      2.211      -0.627
+4  avg_session_minutes    False  log1p + z-score       12.538      10.723       1.500      68.200        2.071        -0.0        1.0     -2.190      2.819       0.467
+5    pages_per_session    False  log1p + z-score       10.460       8.153       2.000      46.700        1.637        -0.0        1.0     -1.862      2.663       0.520
+6                  age    False          z-score       33.158      10.047      18.000      62.000        0.432        -0.0        1.0     -1.512      2.876       0.432
+7  discount_usage_rate    False          z-score        0.385       0.351       0.011       0.984        0.688         0.0        1.0     -1.069      1.709       0.688
+8    cart_abandon_rate    False          z-score        0.517       0.241       0.148       0.969        0.673         0.0        1.0     -1.538      1.879       0.673
+9      total_spend_12m     True  log1p + z-score     1455.014    5037.612      14.760   62271.910        8.518         0.0        1.0     -1.649      3.199       0.619
+
+--- 4. Tỉ trọng phương sai theo khối trong ma trận thiết kế (mã hóa one-hot) ---
+          A. z-score ca dummy  B. dummy 0/1 khong scale  C. dummy x w (chinh)
+numeric                  0.45                     0.729                 0.694
+tier+app                 0.10                     0.162                 0.154
+device                   0.15                     0.048                 0.077
+category                 0.30                     0.062                 0.074
+
+--- 4b. E[d^2] giữa hai khách ngẫu nhiên theo từng biến (mục tiêu = 2 cho mỗi biến) ---
+device_type (3 cot)           2.000
+preferred_category (5 cot)    1.925
+membership_tier (1 cot)       2.000
+app_installed (1 cot)         2.000
+mot cot so (trung binh)       2.000
+
+--- 5. Tỉ trọng bình phương khoảng cách theo thuộc tính gốc, trước (số thô, không scale) và sau chuẩn bị ---
+                     before_share  after_share
+age                        0.0000       0.0771
+n_orders_12m               0.0000       0.0771
+avg_order_value            0.0018       0.0771
+total_spend_12m            0.9978       0.0000
+recency_days               0.0004       0.0771
+discount_usage_rate        0.0000       0.0771
+sessions_per_month         0.0000       0.0771
+avg_session_minutes        0.0000       0.0771
+pages_per_session          0.0000       0.0771
+cart_abandon_rate          0.0000       0.0771
+membership_tier            0.0000       0.0771
+app_installed              0.0000       0.0771
+device_type                0.0000       0.0771
+preferred_category         0.0000       0.0743
+
+--- 6. Hình học của các phiên bản so với ma trận chính ---
+           variant  n_columns  nn5_agree_with_main  dist_spearman_with_main
+0    full_features       20.0               0.9392                   0.9934
+1  cat_unknown_col       20.0               0.9662                   0.9996
+2         cat_knn7       19.0               0.9585                   0.9995
+3         cat_mode       19.0               0.9408                   0.9995
+4      no_category       14.0               0.6854                   0.9967
+5            pca90        9.0               0.7369                   0.9946
+6   gower_distance        NaN               0.7077                   0.8944
+
+--- 6b. PCA: phương sai tích lũy và độ giữ lân cận 5-NN ---
+     k  cum_variance  nn5_agree
+0    1         0.287      0.069
+1    2         0.507      0.162
+2    3         0.662      0.298
+3    4         0.736      0.465
+4    5         0.789      0.552
+5    6         0.828      0.584
+6    7         0.856      0.637
+7    8         0.882      0.695
+8    9         0.905      0.737
+9   10         0.925      0.757
+10  11         0.941      0.812
+11  12         0.956      0.847
+12  13         0.970      0.890
+13  14         0.980      0.923
+14  15         0.988      0.953
+15  16         0.995      0.967
+16  17         0.999      0.992
+17  18         1.000      1.000
+18  19         1.000      1.000
+PCA 90% phương sai: 9 PC; 5-NN giữ lại 0.737
+
+================================================================================
+NGHIỆM THU
+================================================================================
+[PASS] Ma trận chính 260 hàng, không NaN/inf, không có customer_id hay cờ/metadata shape (260, 19)
+[PASS] Số đặc trưng: 14 gốc -> 13 sau chọn lọc (bỏ total_spend) -> 19 cột sau mã hóa 14 -> 13 -> 19
+[PASS] Cột z-score có trung bình 0 và độ lệch chuẩn 1 11 cột
+[PASS] E[d^2] của mỗi biến (số, hạng, nhị phân, device) bằng 2; category gần 2 (có 13 'unknown' toàn số 0) device 2.000, category 1.925
+[PASS] 13 dòng 'unknown' có khối category toàn số 0; các dòng khác có đúng một cột = w 
+[PASS] Tái dựng tay các cột số khớp pipeline 
+[PASS] Chạy lại cho kết quả giống hệt 
+[PASS] Biến thể không giảm chiều tồn tại song song với phiên bản giảm chiều main 19, full_features 20, pca90 9
+[PASS] Mỗi biến số/hạng/nhị phân/device đóng góp cùng một tỉ trọng khoảng cách (chênh < 1e-6); category gần bằng 0.0771 mỗi biến; category 0.0743
+[PASS] Siêu dữ liệu: mỗi cột của X_main ánh xạ đúng một thuộc tính gốc, đủ 13 thuộc tính 
+[PASS] Ma trận Gower đối xứng, đường chéo 0, giá trị trong [0, 1] max 0.702
+
+--- 7. Siêu dữ liệu từng cột của ma trận chính ---
+                            column       source_feature        transform  mean_used  std_used  weight_w    block
+0                     n_orders_12m         n_orders_12m  log1p + z-score     2.0073    1.2232       NaN  numeric
+1                  avg_order_value      avg_order_value  log1p + z-score     3.8813    0.6965       NaN  numeric
+2                     recency_days         recency_days  log1p + z-score     3.5734    1.5053       NaN  numeric
+3               sessions_per_month   sessions_per_month  log1p + z-score     2.2221    0.8056       NaN  numeric
+4              avg_session_minutes  avg_session_minutes  log1p + z-score     2.3682    0.6630       NaN  numeric
+5                pages_per_session    pages_per_session  log1p + z-score     2.2371    0.6114       NaN  numeric
+6                              age                  age          z-score    33.1577   10.0281       NaN  numeric
+7              discount_usage_rate  discount_usage_rate          z-score     0.3854    0.3502       NaN  numeric
+8                cart_abandon_rate    cart_abandon_rate          z-score     0.5175    0.2403       NaN  numeric
+9                  membership_tier      membership_tier          z-score     0.4846    0.7569       NaN  ordinal
+10                   app_installed        app_installed          z-score     0.6577    0.4745       NaN   binary
+11             device_type_desktop          device_type      one-hot x w        NaN       NaN    1.3007  nominal
+12              device_type_mobile          device_type      one-hot x w        NaN       NaN    1.3007  nominal
+13              device_type_tablet          device_type      one-hot x w        NaN       NaN    1.3007  nominal
+14       preferred_category_beauty   preferred_category      one-hot x w        NaN       NaN    1.1247  nominal
+15  preferred_category_electronics   preferred_category      one-hot x w        NaN       NaN    1.1247  nominal
+16      preferred_category_fashion   preferred_category      one-hot x w        NaN       NaN    1.1247  nominal
+17      preferred_category_grocery   preferred_category      one-hot x w        NaN       NaN    1.1247  nominal
+18         preferred_category_home   preferred_category      one-hot x w        NaN       NaN    1.1247  nominal
+[PASS] Pipeline lưu bằng joblib nạp lại trong tiến trình mới và tái tạo X_main.csv sai khác lớn nhất 4.44e-16
+[PASS] Đã ghi hình và bảng 
+--------------------------------------------------------------------------------
+KẾT QUẢ NGHIỆM THU: 13/13 đạt
+Đã ghi SHA-256 của 11 file đã chuẩn bị vào data/03_prepared/PREPARED_SHA256.json

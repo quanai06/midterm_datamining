@@ -1,0 +1,7 @@
+stage,lens,mean_abs_dPearson,max_abs_dPearson,mean_abs_dSpearman,max_abs_dSpearman,nn5_preserved,dist_spearman,hopkins,silhouette_hidden_labels
+D0 clean,raw_z,0.0,0.0,0.0,0.0,1.0,1.0,0.83321,0.29826
+D0 clean,robust,0.0,0.0,0.0,0.0,1.0,1.0,0.7239,0.3274
+Before (D3),raw_z,0.17787,0.85716,0.01999,0.06249,0.52692,0.77182,0.93965,0.28127
+Before (D3),robust,0.17787,0.85716,0.01999,0.06249,0.57231,0.86119,0.83471,0.28835
+After,raw_z,0.06252,0.48085,0.01695,0.0553,0.63,0.8783,0.88529,0.28811
+After,robust,0.06252,0.48085,0.01695,0.0553,0.62154,0.93654,0.75364,0.31387

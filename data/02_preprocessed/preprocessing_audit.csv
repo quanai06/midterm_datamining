@@ -1,0 +1,73 @@
+customer_id,column,action,value_before,value_after,method,reason
+C0001,age,missing->imputed,,25.0,knn10,thiếu trong D3
+C0028,age,missing->imputed,,35.0,knn10,thiếu trong D3
+C0029,age,missing->imputed,,42.0,knn10,thiếu trong D3
+C0053,age,missing->imputed,,32.0,knn10,thiếu trong D3
+C0061,age,missing->imputed,,29.0,knn10,thiếu trong D3
+C0074,age,missing->imputed,,30.0,knn10,thiếu trong D3
+C0093,age,missing->imputed,,42.0,knn10,thiếu trong D3
+C0106,age,missing->imputed,,32.0,knn10,thiếu trong D3
+C0108,age,missing->imputed,,27.0,knn10,thiếu trong D3
+C0116,age,missing->imputed,,36.0,knn10,thiếu trong D3
+C0138,age,missing->imputed,,36.0,knn10,thiếu trong D3
+C0149,age,missing->imputed,,25.0,knn10,thiếu trong D3
+C0174,age,missing->imputed,,45.0,knn10,thiếu trong D3
+C0184,age,missing->imputed,,28.0,knn10,thiếu trong D3
+C0205,age,missing->imputed,,32.0,knn10,thiếu trong D3
+C0215,age,missing->imputed,,30.0,knn10,thiếu trong D3
+C0222,age,missing->imputed,,34.0,knn10,thiếu trong D3
+C0223,age,missing->imputed,,39.0,knn10,thiếu trong D3
+C0226,age,invalid_cell->imputed,150.0,44.0,knn10,"domain: ngoài miền hợp lệ (18, 100)"
+C0237,age,missing->imputed,,29.0,knn10,thiếu trong D3
+C0239,age,missing->imputed,,35.0,knn10,thiếu trong D3
+C0250,age,missing->imputed,,32.0,knn10,thiếu trong D3
+C0062,avg_order_value,invalid_cell->imputed,3093.0,40.75,iterative,"identity: |ln(total/(n x AOV)) - trung vị| = 4.35 > 5 sd bền (0.82); ô nghi = ô cực đoan nhất theo phân vị biên {'n_orders_12m': 0.592, 'avg_order_value': 0.996, 'total_spend_12m': 0.608}; hạng bronze (trung vị total 79); total/n = 40.04 chỉ dùng kiểm tra, không dùng để gán"
+C0242,recency_days,invalid_cell->imputed,-12.0,210.0,iterative,"domain: ngoài miền hợp lệ (0, 365)"
+C0004,discount_usage_rate,invalid_cell->imputed,1.8,0.905,knn5,"domain: ngoài miền hợp lệ (0, 1)"
+C0155,sessions_per_month,invalid_cell->imputed,999.0,8.7,knn10,"domain: ngoài miền hợp lệ (0, 100)"
+C0011,avg_session_minutes,missing->imputed,,7.0,iterative,thiếu trong D3
+C0023,avg_session_minutes,missing->imputed,,12.2,iterative,thiếu trong D3
+C0043,avg_session_minutes,missing->imputed,,8.7,iterative,thiếu trong D3
+C0045,avg_session_minutes,missing->imputed,,39.4,iterative,thiếu trong D3
+C0053,avg_session_minutes,missing->imputed,,10.9,iterative,thiếu trong D3
+C0068,avg_session_minutes,invalid_cell->imputed,1440.0,4.1,iterative,"domain: ngoài miền hợp lệ (0, 240)"
+C0072,avg_session_minutes,missing->imputed,,41.8,iterative,thiếu trong D3
+C0075,avg_session_minutes,missing->imputed,,11.9,iterative,thiếu trong D3
+C0079,avg_session_minutes,missing->imputed,,15.5,iterative,thiếu trong D3
+C0081,avg_session_minutes,missing->imputed,,6.9,iterative,thiếu trong D3
+C0087,avg_session_minutes,missing->imputed,,11.8,iterative,thiếu trong D3
+C0093,avg_session_minutes,missing->imputed,,4.1,iterative,thiếu trong D3
+C0106,avg_session_minutes,missing->imputed,,11.3,iterative,thiếu trong D3
+C0115,avg_session_minutes,missing->imputed,,10.6,iterative,thiếu trong D3
+C0120,avg_session_minutes,missing->imputed,,7.6,iterative,thiếu trong D3
+C0137,avg_session_minutes,missing->imputed,,11.4,iterative,thiếu trong D3
+C0146,avg_session_minutes,missing->imputed,,6.4,iterative,thiếu trong D3
+C0148,avg_session_minutes,missing->imputed,,13.0,iterative,thiếu trong D3
+C0149,avg_session_minutes,missing->imputed,,6.1,iterative,thiếu trong D3
+C0150,avg_session_minutes,missing->imputed,,4.3,iterative,thiếu trong D3
+C0152,avg_session_minutes,missing->imputed,,7.5,iterative,thiếu trong D3
+C0172,avg_session_minutes,missing->imputed,,5.9,iterative,thiếu trong D3
+C0177,avg_session_minutes,missing->imputed,,7.2,iterative,thiếu trong D3
+C0180,avg_session_minutes,missing->imputed,,3.5,iterative,thiếu trong D3
+C0187,avg_session_minutes,missing->imputed,,33.0,iterative,thiếu trong D3
+C0191,avg_session_minutes,missing->imputed,,5.2,iterative,thiếu trong D3
+C0196,avg_session_minutes,missing->imputed,,7.2,iterative,thiếu trong D3
+C0220,avg_session_minutes,missing->imputed,,8.8,iterative,thiếu trong D3
+C0230,avg_session_minutes,missing->imputed,,24.5,iterative,thiếu trong D3
+C0234,avg_session_minutes,missing->imputed,,7.5,iterative,thiếu trong D3
+C0238,avg_session_minutes,missing->imputed,,4.5,iterative,thiếu trong D3
+C0243,avg_session_minutes,missing->imputed,,4.3,iterative,thiếu trong D3
+C0069,cart_abandon_rate,invalid_cell->imputed,1.35,0.36,knn5,"domain: ngoài miền hợp lệ (0, 1)"
+C0062,preferred_category,missing->unknown,,unknown,keep_unknown,thiếu trong D3; giữ mức 'unknown' (xem docs/cau_c_decisions.md)
+C0076,preferred_category,missing->unknown,,unknown,keep_unknown,thiếu trong D3; giữ mức 'unknown' (xem docs/cau_c_decisions.md)
+C0089,preferred_category,missing->unknown,,unknown,keep_unknown,thiếu trong D3; giữ mức 'unknown' (xem docs/cau_c_decisions.md)
+C0101,preferred_category,missing->unknown,,unknown,keep_unknown,thiếu trong D3; giữ mức 'unknown' (xem docs/cau_c_decisions.md)
+C0103,preferred_category,missing->unknown,,unknown,keep_unknown,thiếu trong D3; giữ mức 'unknown' (xem docs/cau_c_decisions.md)
+C0117,preferred_category,missing->unknown,,unknown,keep_unknown,thiếu trong D3; giữ mức 'unknown' (xem docs/cau_c_decisions.md)
+C0130,preferred_category,missing->unknown,,unknown,keep_unknown,thiếu trong D3; giữ mức 'unknown' (xem docs/cau_c_decisions.md)
+C0141,preferred_category,missing->unknown,,unknown,keep_unknown,thiếu trong D3; giữ mức 'unknown' (xem docs/cau_c_decisions.md)
+C0179,preferred_category,missing->unknown,,unknown,keep_unknown,thiếu trong D3; giữ mức 'unknown' (xem docs/cau_c_decisions.md)
+C0188,preferred_category,missing->unknown,,unknown,keep_unknown,thiếu trong D3; giữ mức 'unknown' (xem docs/cau_c_decisions.md)
+C0201,preferred_category,missing->unknown,,unknown,keep_unknown,thiếu trong D3; giữ mức 'unknown' (xem docs/cau_c_decisions.md)
+C0244,preferred_category,missing->unknown,,unknown,keep_unknown,thiếu trong D3; giữ mức 'unknown' (xem docs/cau_c_decisions.md)
+C0249,preferred_category,missing->unknown,,unknown,keep_unknown,thiếu trong D3; giữ mức 'unknown' (xem docs/cau_c_decisions.md)

@@ -1,0 +1,97 @@
+================================================================================
+ĐỐI CHIẾU SAU ĐÓNG BĂNG: mã băm khớp FROZEN_SHA256.json (4 file + D3 + script)
+================================================================================
+
+--- A. Sai khác phân phối CẢ CỘT so với D0 (không phải sai số từng ô) ---
+                 column        stage    n   median      mean       std    skew        max  KS_vs_D0  Wasserstein_vs_D0
+0                   age     D0 clean  260   32.000    33.238    10.354   0.414     62.000       NaN                NaN
+1                   age  Before (D3)  239   32.000    33.607    12.804   3.335    150.000     0.011              0.540
+2                   age        After  260   32.000    33.158    10.047   0.432     62.000     0.023              0.335
+3          n_orders_12m     D0 clean  260    5.000    14.135    21.529   3.003    154.000       NaN                NaN
+4          n_orders_12m  Before (D3)  260    5.000    15.538    25.761   3.330    178.000     0.015              1.412
+5          n_orders_12m        After  260    5.000    15.538    25.761   3.330    178.000     0.015              1.412
+6       avg_order_value     D0 clean  260   44.135    55.257    37.952   1.763    200.250       NaN                NaN
+7       avg_order_value  Before (D3)  260   43.820    86.899   284.438   9.187   3093.000     0.042             32.288
+8       avg_order_value        After  260   43.705    75.160   214.206  10.923   2782.530     0.038             20.695
+9       total_spend_12m     D0 clean  260  198.990  1133.158  2845.276   4.976  25637.000       NaN                NaN
+10      total_spend_12m  Before (D3)  260  211.670  1455.014  5037.612   8.518  62271.910     0.015            321.857
+11      total_spend_12m        After  260  211.670  1455.014  5037.612   8.518  62271.910     0.015            321.857
+12         recency_days     D0 clean  260   42.000    81.458   101.346   1.698    365.000       NaN                NaN
+13         recency_days  Before (D3)  260   42.000    81.304   101.266   1.693    365.000     0.046              1.185
+14         recency_days        After  260   43.000    82.158   101.412   1.671    365.000     0.042              1.377
+15  discount_usage_rate     D0 clean  260    0.206     0.386     0.351   0.689      0.984       NaN                NaN
+16  discount_usage_rate  Before (D3)  260    0.206     0.389     0.360   0.831      1.800     0.004              0.003
+17  discount_usage_rate        After  260    0.206     0.385     0.351   0.688      0.984     0.004              0.000
+18   sessions_per_month     D0 clean  260    9.800    10.724     7.437   0.783     35.800       NaN                NaN
+19   sessions_per_month  Before (D3)  260   10.050    14.901    61.811  15.702    999.000     0.050              4.326
+20   sessions_per_month        After  260   10.000    11.092     8.182   1.161     53.800     0.050              0.526
+21  avg_session_minutes     D0 clean  260    8.400    12.385    10.463   1.945     59.800       NaN                NaN
+22  avg_session_minutes  Before (D3)  229    8.500    18.934    94.939  14.838   1440.000     0.045              6.703
+23  avg_session_minutes        After  260    8.450    12.538    10.723   2.071     68.200     0.035              0.482
+24    pages_per_session     D0 clean  260    7.200    10.367     7.870   1.490     43.500       NaN                NaN
+25    pages_per_session  Before (D3)  260    7.200    10.460     8.153   1.637     46.700     0.004              0.093
+26    pages_per_session        After  260    7.200    10.460     8.153   1.637     46.700     0.004              0.093
+27    cart_abandon_rate     D0 clean  260    0.424     0.518     0.241   0.673      0.969       NaN                NaN
+28    cart_abandon_rate  Before (D3)  260    0.425     0.521     0.246   0.736      1.350     0.004              0.004
+29    cart_abandon_rate        After  260    0.424     0.517     0.241   0.673      0.969     0.004              0.000
+
+--- A. Tóm tắt theo cột (std_ratio = std / std của D0; 1,0 là khớp) ---
+                     KS_before  KS_after  W1_before  W1_after  std_ratio_before  std_ratio_after  skew_D0  skew_before  skew_after
+column                                                                                                                            
+age                      0.011     0.023      0.540     0.335             1.237            0.970    0.414        3.335       0.432
+avg_order_value          0.042     0.038     32.288    20.695             7.495            5.644    1.763        9.187      10.923
+avg_session_minutes      0.045     0.035      6.703     0.482             9.074            1.025    1.945       14.838       2.071
+cart_abandon_rate        0.004     0.004      0.004     0.000             1.022            1.000    0.673        0.736       0.673
+discount_usage_rate      0.004     0.004      0.003     0.000             1.026            0.999    0.689        0.831       0.688
+n_orders_12m             0.015     0.015      1.412     1.412             1.197            1.197    3.003        3.330       3.330
+pages_per_session        0.004     0.004      0.093     0.093             1.036            1.036    1.490        1.637       1.637
+recency_days             0.046     0.042      1.185     1.377             0.999            1.001    1.698        1.693       1.671
+sessions_per_month       0.050     0.050      4.326     0.526             8.311            1.100    0.783       15.702       1.161
+total_spend_12m          0.015     0.015    321.857   321.857             1.771            1.771    4.976        8.518       8.518
+
+--- B. Sai số TỔNG HỢP tại các ô đã thay đổi, đo bằng D0 (sd0 = độ lệch chuẩn cả cột D0). noise_floor = |D2 - D0| trên cùng các ô ---
+                column                 action  n_cells  MAE_after_vs_D0  RMSE_after_vs_D0  MedAE_after_vs_D0  bias_after_minus_D0  MAE_global_median_vs_D0  MAE_after_relative_to_sd_D0  MAE_global_median_relative_to_sd_D0  noise_floor_MAE_D2_vs_D0  MAE_after_vs_D2  std_after_over_std_D0  corr_after_D0  MAE_before_vs_D0
+0                  age  invalid_cell->imputed        1            3.000             3.000              3.000               -3.000                   15.000                        0.290                                1.449                   103.000          106.000                    NaN            NaN           103.000
+1                  age       missing->imputed       21            7.143             8.304              7.000               -0.857                    8.238                        0.690                                0.796                     0.000            7.143                  0.534          0.578               NaN
+2      avg_order_value  invalid_cell->imputed        1            6.220             6.220              6.220                6.220                    9.200                        0.164                                0.242                  3058.470         3052.250                    NaN            NaN          3058.470
+3  avg_session_minutes  invalid_cell->imputed        1            0.700             0.700              0.700                0.700                    5.100                        0.067                                0.487                  1436.600         1435.900                    NaN            NaN          1436.600
+4  avg_session_minutes       missing->imputed       31            2.948             4.516              1.800               -0.690                    6.229                        0.282                                0.595                     2.148            3.794                  0.872          0.916               NaN
+5    cart_abandon_rate  invalid_cell->imputed        1            0.027             0.027              0.027               -0.027                    0.038                        0.112                                0.158                     0.963            0.990                    NaN            NaN             0.963
+6  discount_usage_rate  invalid_cell->imputed        1            0.049             0.049              0.049               -0.049                    0.750                        0.140                                2.135                     0.846            0.895                    NaN            NaN             0.846
+7         recency_days  invalid_cell->imputed        1          141.000           141.000            141.000              141.000                   26.000                        1.391                                0.257                    81.000          222.000                    NaN            NaN            81.000
+8   sessions_per_month  invalid_cell->imputed        1            3.800             3.800              3.800                3.800                    5.100                        0.511                                0.686                   994.100          990.300                    NaN            NaN           994.100
+
+--- B. Chi tiết 7 ô không hợp lệ (mô tả, n = 1 mỗi cột nên không có ý nghĩa thống kê) ---
+   customer_id               column   before    after      d0  baseline_median
+18       C0226                  age   150.00   44.000  47.000           32.000
+22       C0062      avg_order_value  3093.00   40.750  34.530           43.730
+23       C0242         recency_days   -12.00  210.000  69.000           43.000
+24       C0004  discount_usage_rate     1.80    0.905   0.954            0.204
+25       C0155   sessions_per_month   999.00    8.700   4.900           10.000
+31       C0068  avg_session_minutes  1440.00    4.100   3.400            8.500
+58       C0069    cart_abandon_rate     1.35    0.360   0.387            0.425
+
+--- C. Cấu trúc so với D0 (silhouette theo nhãn ẩn chỉ để chẩn đoán độ tách, không phải kết quả phân cụm) ---
+         stage    lens  mean_abs_dPearson  max_abs_dPearson  mean_abs_dSpearman  max_abs_dSpearman  nn5_preserved  dist_spearman  hopkins  silhouette_hidden_labels
+0     D0 clean   raw_z             0.0000            0.0000              0.0000             0.0000         1.0000         1.0000   0.8332                    0.2983
+1     D0 clean  robust             0.0000            0.0000              0.0000             0.0000         1.0000         1.0000   0.7239                    0.3274
+2  Before (D3)   raw_z             0.1779            0.8572              0.0200             0.0625         0.5269         0.7718   0.9397                    0.2813
+3  Before (D3)  robust             0.1779            0.8572              0.0200             0.0625         0.5723         0.8612   0.8347                    0.2884
+4        After   raw_z             0.0625            0.4809              0.0169             0.0553         0.6300         0.8783   0.8853                    0.2881
+5        After  robust             0.0625            0.4809              0.0169             0.0553         0.6215         0.9365   0.7536                    0.3139
+
+--- D. preferred_category: 13 ô thiếu, nhãn biến thể so với D0 (n quá nhỏ, khoảng tin cậy rộng) ---
+       variant  n_cells  n_correct  accuracy  wilson95_low  wilson95_high
+0         knn7       13          3     0.231         0.082          0.503
+1  global_mode       13          3     0.231         0.082          0.503
+
+--- D. Phân bố nhãn theo từng biến thể ---
+             D0  main (unknown)  knn7  mode
+beauty       53              49    53    49
+electronics  54              52    54    52
+fashion      70              67    68    80
+grocery      35              34    35    34
+home         48              45    50    45
+unknown       0              13     0     0
+
+Đã ghi 4 hình vào /Users/quanai06/Documents/Code/customer-segmentation-midterm/figures/03_preprocessing_eval. Script chỉ đo; không ghi vào data/.

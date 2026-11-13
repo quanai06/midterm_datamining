@@ -1,0 +1,12 @@
+\section{Kết luận}
+\label{sec:concl}
+
+Báo cáo đã xây dựng và kiểm chứng một quy trình phân cụm khách hàng thương mại điện tử từ dữ liệu giả lập đến đánh giá, với các điểm chính sau.
+\begin{enumerate}
+\item \textbf{Dữ liệu (câu a).} Bộ dữ liệu 260 khách, 14 thuộc tính theo mô hình nhân quả nhiều tầng, 4 phân khúc ẩn có chồng lấn, bốn cột nhiễu, 15 khách có ngoại lai (8 hợp lệ, 7 lỗi) và ba cột thiếu, tái lập được và có nhật ký từng ô bị thay đổi.
+\item \textbf{Hiểu dữ liệu (câu b).} Hai vấn đề chi phối hình học khoảng cách là ô hỏng/thang đo và phân phối lệch phải; Pearson bị ô hỏng phá hủy trong khi Spearman bền; thống kê Hopkins bị phồng bởi ngoại lai; phương pháp phát hiện ngoại lai thống kê chung có precision thấp ($0{,}14$) nên không dùng để xóa.
+\item \textbf{Tiền xử lý (câu c).} Chỉ sửa từng ô không hợp lệ, điền khuyết theo thí nghiệm che ô có so sánh ghép cặp và quy tắc 1-SE, giữ \texttt{unknown} cho biến định danh có bất định cao, không khử nhiễu từng giá trị, chỉ đánh dấu cực trị hợp lệ. Đối chiếu sau đóng băng cho thấy cải thiện cấu trúc (sai khác Pearson với D0 giảm từ $0{,}178$ xuống $0{,}063$), kèm vài kết quả không thuận lợi được nêu rõ.
+\item \textbf{Chuẩn bị (câu d).} Ma trận $260\times19$ với log1p + StandardScaler, one-hot nhân trọng số $w=1/\sqrt{1-\sum p^2}$ để mỗi biến đóng góp ngang nhau, bỏ \var{total_spend_12m} do dư thừa ($R^2=0{,}987$), không PCA ở ma trận chính.
+\item \textbf{Phân cụm (câu e).} Ở $k=4$, ARI so với phân khúc ẩn tăng từ $0{,}611$ (trước) lên $0{,}745$ (sau); khi $k$ chọn theo Silhouette, dữ liệu thô cho $k=7$ (ARI $0{,}434$) còn dữ liệu đã chuẩn bị chọn đúng $k=4$ (ARI $0{,}745$) và ổn định hơn rõ rệt (chạy lặp $0{,}685\to0{,}958$).
+Phần đóng góp riêng của chuẩn bị tại $k=4$ chưa chứng minh được; bằng chứng nằm ở chọn $k$ và độ vững.
+\end{enumerate}

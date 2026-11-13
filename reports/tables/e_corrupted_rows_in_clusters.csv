@@ -1,0 +1,9 @@
+pipeline,setting,k,n_repaired_rows,n_clusters_size_le_10,n_small_clusters_mostly_repaired_rows,rows_of_repaired_in_smallest_cluster,smallest_cluster
+B0,k4,4,7,2,0,0,1
+B0,ksel,2,7,1,0,0,3
+B1,k4,4,7,0,0,3,45
+B1,ksel,7,7,1,1,1,1
+L2,k4,4,7,0,0,1,43
+L2,ksel,7,7,1,0,0,2
+L3,k4,4,7,0,0,1,46
+L3,ksel,4,7,0,0,1,46

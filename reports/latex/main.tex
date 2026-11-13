@@ -1,0 +1,87 @@
+% Báo cáo giữa kỳ - Phân tích và Khai phá dữ liệu. Biên dịch: tectonic main.tex (XeTeX)
+\documentclass[11pt,a4paper]{article}
+\usepackage{fontspec}
+\setmainfont{texgyretermes}[Extension=.otf,UprightFont=*-regular,BoldFont=*-bold,ItalicFont=*-italic,BoldItalicFont=*-bolditalic]
+\setsansfont{texgyreheros}[Extension=.otf,UprightFont=*-regular,BoldFont=*-bold,ItalicFont=*-italic,BoldItalicFont=*-bolditalic]
+\setmonofont{texgyrecursor}[Extension=.otf,UprightFont=*-regular,BoldFont=*-bold,ItalicFont=*-italic,BoldItalicFont=*-bolditalic,Scale=0.88]
+\usepackage[a4paper,left=2.4cm,right=2.4cm,top=2.4cm,bottom=2.4cm]{geometry}
+\usepackage{graphicx,booktabs,tabularx,longtable,array,amsmath,amssymb,xcolor,enumitem,placeins,fancyhdr,setspace}
+\usepackage[font=small,labelfont=bf,labelsep=period]{caption}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,urlcolor=blue!50!black,citecolor=blue!50!black]{hyperref}
+
+\renewcommand{\figurename}{Hình}
+\renewcommand{\tablename}{Bảng}
+\renewcommand{\contentsname}{Mục lục}
+\renewcommand{\refname}{Tài liệu tham khảo}
+\renewcommand{\abstractname}{Tóm tắt}
+\renewcommand{\arraystretch}{1.15}
+\setlist{nosep,leftmargin=1.4em}
+\setstretch{1.08}
+\setlength{\parskip}{3pt}
+\emergencystretch=3em
+\graphicspath{{../../figures/02_understanding/}{../../figures/03_preprocessing/}{../../figures/03_preprocessing_eval/}{../../figures/04_preparation/}{../../figures/05_clustering/}}
+
+\definecolor{cTeal}{HTML}{2E9C8A}
+\definecolor{cViolet}{HTML}{9A4D8E}
+\definecolor{cBlue}{HTML}{3775BA}
+\definecolor{cGray}{HTML}{8C8C8C}
+
+\makeatletter
+\def\var@iter#1{\ifx#1\@nil\else\var@char#1\expandafter\var@iter\fi}
+\def\var@char#1{\ifx#1_\_\allowbreak\else#1\fi}
+\newcommand{\var}[1]{\texttt{\var@iter#1\@nil}}
+\makeatother
+\newcommand{\CI}[2]{[#1; #2]}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Phân cụm khách hàng thương mại điện tử}
+\fancyhead[R]{\small MSSV 24022433}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+
+\begin{document}
+
+\begin{titlepage}
+\centering
+{\large ĐẠI HỌC QUỐC GIA HÀ NỘI\\ TRƯỜNG ĐẠI HỌC CÔNG NGHỆ}\\[1.2cm]
+{\Large \textbf{BÁO CÁO GIỮA KỲ}}\\[0.3cm]
+{\large Môn: Phân tích và Khai phá dữ liệu}\\[1.8cm]
+{\LARGE \textbf{Phân nhóm khách hàng thương mại điện tử\\[2pt] trên dữ liệu giả lập}}\\[0.6cm]
+{\large Từ thiết kế dữ liệu, hiểu và xử lý dữ liệu đến phân cụm và đánh giá}\\[2.4cm]
+\begin{tabular}{rl}
+Sinh viên: & \textbf{Lê Hoàng Quân}\\
+Mã sinh viên: & \textbf{24022433}\\
+Lớp: & \textbf{K69A-AI3}\\
+Tham số theo mã sinh viên: & $a=3,\; b=3,\; c=4$\\
+\end{tabular}\\[2.6cm]
+{\normalsize Hà Nội, tháng 11 năm 2026}
+\end{titlepage}
+
+\begin{abstract}
+\noindent Báo cáo xây dựng một quy trình khai phá dữ liệu hoàn chỉnh cho bài toán phân nhóm khách hàng thương mại điện tử (học không giám sát):
+sinh dữ liệu giả lập có cấu trúc hành vi tiềm ẩn ($N=260$, 14 thuộc tính, nhiễu, 15 khách có ngoại lai, 3 cột thiếu giá trị), hiểu dữ liệu, tiền xử lý,
+chuẩn bị dữ liệu và phân cụm. Dữ liệu trước xử lý và sau xử lý được so sánh bằng K-Means trên cùng 260 khách.
+Với $k=4$, ARI so với phân khúc ẩn tăng từ $0{,}611$ \CI{0,515}{0,708} lên $0{,}745$ \CI{0,658}{0,833}; khi $k$ được chọn bằng Silhouette,
+dữ liệu thô cho $k=7$ (ARI $0{,}434$) còn dữ liệu đã chuẩn bị chọn đúng $k=4$ (ARI $0{,}745$) và ổn định hơn rõ rệt.
+Đóng góp riêng của bước chuẩn bị (câu d) tại $k=4$ chưa chứng minh được ($+0{,}044$, khoảng tin cậy chứa 0); bằng chứng nằm ở việc chọn $k$ và độ ổn định.
+Phân khúc ẩn chỉ dùng để đánh giá, không dùng để chọn tham số; các kết quả không thuận lợi được nêu cùng với kết quả.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\input{sec1_intro}
+\input{sec2_a}
+\input{sec3_b}
+\input{sec4_c}
+\input{sec5_d}
+\input{sec6_e}
+\input{sec7_conclusion}
+\appendix
+\input{app_ai}
+\input{app_repro}
+
+\end{document}

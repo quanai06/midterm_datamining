@@ -1,0 +1,8 @@
+row,customer_id,column,value,rule,detail
+225,C0226,age,150.0,domain,"ngoài miền hợp lệ (18, 100)"
+241,C0242,recency_days,-12.0,domain,"ngoài miền hợp lệ (0, 365)"
+3,C0004,discount_usage_rate,1.8,domain,"ngoài miền hợp lệ (0, 1)"
+154,C0155,sessions_per_month,999.0,domain,"ngoài miền hợp lệ (0, 100)"
+67,C0068,avg_session_minutes,1440.0,domain,"ngoài miền hợp lệ (0, 240)"
+68,C0069,cart_abandon_rate,1.35,domain,"ngoài miền hợp lệ (0, 1)"
+61,C0062,avg_order_value,3093.0,identity,"|ln(total/(n x AOV)) - trung vị| = 4.35 > 5 sd bền (0.82); ô nghi = ô cực đoan nhất theo phân vị biên {'n_orders_12m': 0.592, 'avg_order_value': 0.996, 'total_spend_12m': 0.608}; hạng bronze (trung vị total 79); total/n = 40.04 chỉ dùng kiểm tra, không dùng để gán"

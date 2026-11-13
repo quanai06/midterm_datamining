@@ -1,0 +1,7 @@
+customer_id,column,value,rule
+C0226,age,150.0,"(18, 100)"
+C0242,recency_days,-12.0,"(0, 365)"
+C0004,discount_usage_rate,1.8,"(0, 1)"
+C0155,sessions_per_month,999.0,"(0, 100)"
+C0068,avg_session_minutes,1440.0,"(0, 240)"
+C0069,cart_abandon_rate,1.35,"(0, 1)"

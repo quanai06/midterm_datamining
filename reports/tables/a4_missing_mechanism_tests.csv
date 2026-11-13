@@ -1,0 +1,40 @@
+missing_col,other,test,p_asymptotic,p,effect,effect_name,p_perm,min_expected,p_bonferroni
+preferred_category,device_type,Chi2,0.00057,0.0015,0.23975,Cramer V,0.0015,2.05,0.05849
+avg_session_minutes,device_type,Chi2,0.00341,0.0037,0.20905,Cramer V,0.0037,4.88846,0.14429
+preferred_category,app_installed,Chi2,0.06738,0.04,0.11344,Cramer V,0.04,4.45,1.0
+avg_session_minutes,avg_order_value,Mann-Whitney,0.07652,0.07652,0.19622,rank-biserial,,,1.0
+avg_session_minutes,membership_tier,Chi2,0.10685,0.10685,0.13116,Cramer V,,5.00769,1.0
+preferred_category,total_spend_12m,Mann-Whitney,0.19562,0.19562,-0.21333,rank-biserial,,,1.0
+age,app_installed,Chi2,0.19718,0.19718,0.07998,Cramer V,,7.18846,1.0
+avg_session_minutes,sessions_per_month,Mann-Whitney,0.21706,0.21706,-0.13678,rank-biserial,,,1.0
+preferred_category,membership_tier,Chi2,0.24728,0.24468,0.10367,Cramer V,0.24468,2.1,1.0
+preferred_category,n_orders_12m,Mann-Whitney,0.26191,0.26191,-0.18219,rank-biserial,,,1.0
+avg_session_minutes,age,Mann-Whitney,0.27374,0.27374,0.12945,rank-biserial,,,1.0
+age,device_type,Chi2,0.26085,0.28157,0.10167,Cramer V,0.28157,3.31154,1.0
+avg_session_minutes,cart_abandon_rate,Mann-Whitney,0.29793,0.29793,-0.11537,rank-biserial,,,1.0
+avg_session_minutes,total_spend_12m,Mann-Whitney,0.32344,0.32344,0.10945,rank-biserial,,,1.0
+age,cart_abandon_rate,Mann-Whitney,0.34192,0.34192,-0.12532,rank-biserial,,,1.0
+preferred_category,discount_usage_rate,Mann-Whitney,0.41589,0.41589,0.13423,rank-biserial,,,1.0
+avg_session_minutes,app_installed,Chi2,0.44625,0.44625,0.04724,Cramer V,,10.61154,1.0
+preferred_category,recency_days,Mann-Whitney,0.46742,0.46742,0.1199,rank-biserial,,,1.0
+avg_session_minutes,preferred_category,Chi2,0.51519,0.52215,0.1149,Cramer V,0.52215,4.26721,1.0
+age,sessions_per_month,Mann-Whitney,0.59947,0.59947,0.06934,rank-biserial,,,1.0
+age,avg_order_value,Mann-Whitney,0.60477,0.60477,0.06834,rank-biserial,,,1.0
+age,membership_tier,Chi2,0.60918,0.61414,0.06175,Cramer V,0.61414,3.39231,1.0
+avg_session_minutes,recency_days,Mann-Whitney,0.61515,0.61515,0.05578,rank-biserial,,,1.0
+age,preferred_category,Chi2,0.61768,0.62474,0.10361,Cramer V,0.62474,2.89069,1.0
+avg_session_minutes,pages_per_session,Mann-Whitney,0.62689,0.62689,-0.05395,rank-biserial,,,1.0
+preferred_category,pages_per_session,Mann-Whitney,0.62811,0.62811,-0.08004,rank-biserial,,,1.0
+avg_session_minutes,discount_usage_rate,Mann-Whitney,0.64415,0.64415,-0.05127,rank-biserial,,,1.0
+preferred_category,cart_abandon_rate,Mann-Whitney,0.64977,0.64977,0.07505,rank-biserial,,,1.0
+avg_session_minutes,n_orders_12m,Mann-Whitney,0.72527,0.72527,0.03846,rank-biserial,,,1.0
+age,recency_days,Mann-Whitney,0.75979,0.75979,-0.04045,rank-biserial,,,1.0
+preferred_category,age,Mann-Whitney,0.76625,0.76625,0.04935,rank-biserial,,,1.0
+preferred_category,sessions_per_month,Mann-Whitney,0.778,0.778,-0.04671,rank-biserial,,,1.0
+preferred_category,avg_session_minutes,Mann-Whitney,0.78098,0.78098,-0.0463,rank-biserial,,,1.0
+age,n_orders_12m,Mann-Whitney,0.85371,0.85371,-0.02411,rank-biserial,,,1.0
+age,total_spend_12m,Mann-Whitney,0.88688,0.88688,0.01893,rank-biserial,,,1.0
+age,pages_per_session,Mann-Whitney,0.88926,0.88926,0.01853,rank-biserial,,,1.0
+preferred_category,avg_order_value,Mann-Whitney,0.89164,0.89164,-0.02273,rank-biserial,,,1.0
+age,discount_usage_rate,Mann-Whitney,0.91203,0.91203,0.01474,rank-biserial,,,1.0
+age,avg_session_minutes,Mann-Whitney,0.97572,0.97572,0.00472,rank-biserial,,,1.0

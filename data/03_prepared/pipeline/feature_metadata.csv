@@ -1,0 +1,20 @@
+column,source_feature,transform,mean_used,std_used,weight_w,block
+n_orders_12m,n_orders_12m,log1p + z-score,2.007339,1.223243,,numeric
+avg_order_value,avg_order_value,log1p + z-score,3.881328,0.696499,,numeric
+recency_days,recency_days,log1p + z-score,3.573356,1.505287,,numeric
+sessions_per_month,sessions_per_month,log1p + z-score,2.222141,0.805589,,numeric
+avg_session_minutes,avg_session_minutes,log1p + z-score,2.368181,0.663006,,numeric
+pages_per_session,pages_per_session,log1p + z-score,2.237075,0.611378,,numeric
+age,age,z-score,33.157692,10.02814,,numeric
+discount_usage_rate,discount_usage_rate,z-score,0.385369,0.35025,,numeric
+cart_abandon_rate,cart_abandon_rate,z-score,0.517481,0.240295,,numeric
+membership_tier,membership_tier,z-score,0.484615,0.756862,,ordinal
+app_installed,app_installed,z-score,0.657692,0.474482,,binary
+device_type_desktop,device_type,one-hot x w,,,1.300748,nominal
+device_type_mobile,device_type,one-hot x w,,,1.300748,nominal
+device_type_tablet,device_type,one-hot x w,,,1.300748,nominal
+preferred_category_beauty,preferred_category,one-hot x w,,,1.124658,nominal
+preferred_category_electronics,preferred_category,one-hot x w,,,1.124658,nominal
+preferred_category_fashion,preferred_category,one-hot x w,,,1.124658,nominal
+preferred_category_grocery,preferred_category,one-hot x w,,,1.124658,nominal
+preferred_category_home,preferred_category,one-hot x w,,,1.124658,nominal

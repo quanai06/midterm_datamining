@@ -1,0 +1,60 @@
+\section{Giới thiệu và ràng buộc của đề}
+\label{sec:intro}
+
+Một sàn thương mại điện tử muốn phân nhóm khách hàng theo đặc điểm và hành vi mua sắm để hỗ trợ chăm sóc khách hàng và tiếp thị.
+Đây là bài toán \emph{phân cụm} (học không giám sát): không có nhãn mục tiêu như trong phân loại. Vì dữ liệu được giả lập, ta biết trước một cấu trúc nhóm ẩn;
+cấu trúc này \textbf{chỉ được dùng để đánh giá ở cuối} (câu c, sau khi đóng băng kết quả, và câu e), tuyệt đối không dùng để chọn thuộc tính, tham số hay số cụm.
+
+\subsection{Tham số theo mã sinh viên}
+Với $s = 24022433$: $a = s \bmod 5 = 3$, $b = \lfloor s/10\rfloor \bmod 5 = 3$, $c = \lfloor s/100\rfloor \bmod 5 = 4$.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Ràng buộc của đề và mức thực hiện.}
+\label{tab:constraints}
+\begin{tabularx}{\linewidth}{Xlll}
+\toprule
+Yêu cầu & Công thức & Tối thiểu & Thực hiện\\
+\midrule
+Số bản ghi & $N = 200 + 20a$ & 260 & \textbf{260}\\
+Số thuộc tính đầu vào & $\ge 8 + b$ & 11 & \textbf{14}\\
+Số bản ghi ngoại lai & $\ge 5 + 2c$ & 13 & \textbf{15}\\
+Thuộc tính có giá trị thiếu & $\ge 2$ & 2 & \textbf{3}\\
+Thuộc tính số có nhiễu ngẫu nhiên & $\ge 2$ & 2 & \textbf{4}\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Quy trình và nguyên tắc làm việc}
+Quy trình gồm năm giai đoạn (Hình~\ref{fig:pipeline}). Dữ liệu được sinh theo chuỗi tích lũy D0 $\to$ D3, mỗi bước thêm đúng một loại vấn đề, để có thể đo riêng tác động của từng loại.
+Các nguyên tắc xuyên suốt:
+\begin{itemize}
+\item \textbf{Không rò rỉ nhãn.} Nhãn phân khúc và nhật ký chèn lỗi nằm trong thư mục riêng, không có mặt trong bất kỳ file dữ liệu nào đưa vào phân tích. Câu b chia hai phần: Phần A đọc duy nhất file D3 (``mù''), Phần B mới đối chiếu với D0--D2.
+\item \textbf{Đóng băng và kiểm chứng.} Kết quả câu c được ghi mã băm SHA-256 và khóa ghi; script đối chiếu với dữ liệu sạch và các câu sau từ chối chạy nếu mã băm lệch.
+\item \textbf{Trung thực về kết quả.} Mọi kết quả không thuận lợi, mọi lần sửa phương pháp sau khi thấy kết quả và mọi sai sót đã phát hiện được ghi lại (Phụ lục~\ref{app:ai}).
+\end{itemize}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  box/.style={draw=#1!70!black, rounded corners=2pt, align=center, font=\footnotesize, text width=2.55cm, minimum height=1.05cm, fill=#1!12},
+  arr/.style={-{Stealth[length=2mm]}, thick}, node distance=6mm]
+\node[box=cBlue] (a0) {\textbf{Câu a}\\ D0: dữ liệu sạch};
+\node[box=cBlue, right=of a0] (a1) {D1 = D0\\ + nhiễu (4 cột)};
+\node[box=cBlue, right=of a1] (a2) {D2 = D1\\ + 15 ngoại lai};
+\node[box=cBlue, right=of a2] (a3) {D3 = D2\\ + thiếu (3 cột)};
+\node[box=cViolet, below=12mm of a0] (b) {\textbf{Câu b}\\ hiểu dữ liệu\\ (chỉ đọc D3)};
+\node[box=cViolet, right=of b] (c) {\textbf{Câu c}\\ tiền xử lý\\ + đóng băng SHA-256};
+\node[box=cTeal, right=of c] (d) {\textbf{Câu d}\\ chuẩn bị\\ $X_{\text{main}}$: $260\times19$};
+\node[box=cTeal, right=of d] (e) {\textbf{Câu e}\\ phân cụm\\ và đánh giá};
+\node[box=cGray, dashed, text width=6.4cm, below=10mm of $(c)!0.5!(d)$] (h) {Thông tin ẩn: nhãn phân khúc, nhật ký chèn lỗi, D0\\ (chỉ dùng để đánh giá ở câu c sau đóng băng và ở câu e)};
+\draw[arr] (a0) -- (a1); \draw[arr] (a1) -- (a2); \draw[arr] (a2) -- (a3);
+\draw[arr] (a3.south) -- ++(0,-0.55) -| (b.north);
+\draw[arr] (b) -- (c); \draw[arr] (c) -- (d); \draw[arr] (d) -- (e);
+\draw[arr, dashed, cGray] (h.north) ++(-1.3,0) -- (c.south);
+\draw[arr, dashed, cGray] (h.north) ++(1.3,0) -- ($(e.south)+(-0.4,0)$);
+\end{tikzpicture}
+\caption{Sơ đồ quy trình. Dữ liệu qua bốn phiên bản D0--D3; câu b--e chỉ làm việc với D3 và các kết quả đã đóng băng.}
+\label{fig:pipeline}
+\end{figure}
+\FloatBarrier

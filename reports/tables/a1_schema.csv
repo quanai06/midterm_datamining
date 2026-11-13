@@ -1,0 +1,16 @@
+,dtype_pandas,n_unique,n_missing,group,dtype_khai_bao,valid_domain
+customer_id,object,260,0,,,
+age,float64,43,21,Nhân khẩu,int,18-70
+n_orders_12m,int64,62,0,Mua hàng,int,>=1 (thực tế 1-60)
+avg_order_value,float64,258,0,Chi tiêu,float,>0 (thực tế 8-300)
+total_spend_12m,float64,260,0,Chi tiêu,float,>0
+recency_days,int64,125,0,Mua hàng,int,0-365
+discount_usage_rate,float64,210,0,Khuyến mãi,float,"[0,1]"
+sessions_per_month,float64,159,0,Tương tác,float,>=0.5
+avg_session_minutes,float64,144,31,Tương tác,float,1-90
+pages_per_session,float64,142,0,Duyệt,float,1-60
+cart_abandon_rate,float64,207,0,Duyệt,float,"[0,1]"
+membership_tier,object,3,0,Phân loại thứ tự,ordinal,bronze<silver<gold
+device_type,object,3,0,Phân loại định danh,nominal,mobile/desktop/tablet
+preferred_category,object,5,13,Phân loại định danh,nominal,fashion/electronics/home/beauty/grocery
+app_installed,int64,2,0,Nhị phân,binary,0/1

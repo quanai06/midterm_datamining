@@ -1,0 +1,11 @@
+action,column,n_cells
+invalid_cell->imputed,age,1
+invalid_cell->imputed,avg_order_value,1
+invalid_cell->imputed,avg_session_minutes,1
+invalid_cell->imputed,cart_abandon_rate,1
+invalid_cell->imputed,discount_usage_rate,1
+invalid_cell->imputed,recency_days,1
+invalid_cell->imputed,sessions_per_month,1
+missing->imputed,age,21
+missing->imputed,avg_session_minutes,31
+missing->unknown,preferred_category,13

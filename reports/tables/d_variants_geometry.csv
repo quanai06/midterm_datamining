@@ -1,0 +1,8 @@
+variant,n_columns,nn5_agree_with_main,dist_spearman_with_main
+full_features,20.0,0.93923,0.9934
+cat_unknown_col,20.0,0.96615,0.99955
+cat_knn7,19.0,0.95846,0.99949
+cat_mode,19.0,0.94077,0.9995
+no_category,14.0,0.68538,0.99671
+pca90,9.0,0.73692,0.99461
+gower_distance,,0.70769,0.89436

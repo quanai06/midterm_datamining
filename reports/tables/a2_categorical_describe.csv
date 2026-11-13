@@ -1,0 +1,5 @@
+attribute,n_levels,n_missing,mode,mode_share,entropy_bits,counts
+membership_tier,3,0,bronze,0.677,1.231,"{""bronze"": 176, ""silver"": 42, ""gold"": 42}"
+device_type,3,0,mobile,0.542,1.42,"{""mobile"": 141, ""desktop"": 78, ""tablet"": 41}"
+preferred_category,5,13,fashion,0.258,2.46,"{""fashion"": 67, ""electronics"": 52, ""beauty"": 49, ""home"": 45, ""grocery"": 34, ""nan"": 13}"
+app_installed,2,0,1,0.658,0.927,"{""1"": 171, ""0"": 89}"

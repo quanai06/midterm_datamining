@@ -1,0 +1,13 @@
+,R2_with_total,VIF_with_total,R2_without_total,VIF_without_total
+age,0.3469,1.5311,0.3339,1.5013
+n_orders_12m,0.9851,67.1455,0.8622,7.2546
+avg_order_value,0.9326,14.8315,0.5743,2.3492
+total_spend_12m,0.9879,82.4801,,
+recency_days,0.6503,2.8592,0.6502,2.8588
+discount_usage_rate,0.5869,2.4208,0.5863,2.4174
+sessions_per_month,0.7592,4.1521,0.759,4.1496
+avg_session_minutes,0.832,5.951,0.8309,5.9147
+pages_per_session,0.9019,10.1896,0.9018,10.184
+cart_abandon_rate,0.8313,5.929,0.827,5.7804
+tier,0.7435,3.8993,0.7426,3.8845
+app,0.1096,1.1231,0.107,1.1198

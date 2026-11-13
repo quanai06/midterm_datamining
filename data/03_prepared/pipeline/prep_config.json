@@ -1,0 +1,48 @@
+{
+ "log1p_columns": [
+  "n_orders_12m",
+  "avg_order_value",
+  "recency_days",
+  "sessions_per_month",
+  "avg_session_minutes",
+  "pages_per_session"
+ ],
+ "linear_columns": [
+  "age",
+  "discount_usage_rate",
+  "cart_abandon_rate"
+ ],
+ "dropped_for_redundancy": [
+  "total_spend_12m"
+ ],
+ "ordinal_order": [
+  "bronze",
+  "silver",
+  "gold"
+ ],
+ "w_device": 1.3007481453372278,
+ "w_category": 1.1246575775908527,
+ "category_levels": [
+  "beauty",
+  "electronics",
+  "fashion",
+  "grocery",
+  "home"
+ ],
+ "unknown_encoding": "all-zero category block",
+ "scaler": "StandardScaler (sau log1p cho cột lệch)",
+ "pca90_components": 9,
+ "seed": 42,
+ "input_frozen_sha256": {
+  "data/02_preprocessed/data_after_preprocessing.csv": "eee9568a73267203497c91a332a62f382304b5b3c46b55f600613632c66ded88",
+  "data/02_preprocessed/preprocessing_audit.csv": "e8a7ff801b7368146e03670404ff8f900d6dba8a663b6173b0a92bde26eade2b",
+  "data/02_preprocessed/preprocessing_flags.csv": "6ed310f50f0293303b6ade0aee1fc5aefb9cee8a304e139c6dd4a81c0b7c3a03",
+  "data/02_preprocessed/variants/preferred_category_variants.csv": "5a60a49a22a90eff941bc7124d4a79de360788913acde266d4702e5b9404140c"
+ },
+ "versions": {
+  "numpy": "2.5.1",
+  "pandas": "2.2.3",
+  "sklearn": "1.9.0"
+ },
+ "load_note": "joblib.load cần src/ trong sys.path để import prep_utils.scale_by"
+}

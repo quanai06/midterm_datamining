@@ -1,0 +1,7 @@
+pipeline,k,linkage,ARI,NMI,purity,sil_gower,sil_common,min_cluster,sizes,selected_by_gower_silhouette
+B1_gower_raw,4,average,0.0466,0.14828,0.37308,0.13991,0.13043,1,238 / 18 / 3 / 1,True
+B1_gower_raw,4,complete,0.12584,0.1802,0.46538,0.07593,0.02916,13,123 / 68 / 56 / 13,False
+L2_gower_processed_raw_units,4,average,0.17044,0.33073,0.45385,0.137,0.11095,1,215 / 42 / 2 / 1,True
+L2_gower_processed_raw_units,4,complete,0.26203,0.35971,0.59231,0.11322,0.10546,20,123 / 68 / 49 / 20,False
+L3_gower_prepared,4,average,0.48679,0.51202,0.70769,0.2569,0.25124,2,119 / 71 / 68 / 2,False
+L3_gower_prepared,4,complete,0.60484,0.60899,0.83846,0.2687,0.24194,43,101 / 62 / 54 / 43,True
